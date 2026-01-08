@@ -83,6 +83,7 @@ export default {
         grass: "#647a67",
         algae: "#819c85",
         cream: '#faf9f4',
+        darkCream: '#f0eee1',
         mint: "#cdddcd",
         san: "#cfc9c1",
         beige: "#eeeada",
