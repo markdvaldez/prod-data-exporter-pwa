@@ -1,6 +1,6 @@
 "use client";
 
-import { MainPage } from "@/runnersQcApp/pages/MainPage";
+import { MainPage } from "@/prodDataExporter/pages/MainPage";
 
 function Page() {
   return <MainPage />;

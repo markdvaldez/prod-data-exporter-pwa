@@ -5,7 +5,7 @@ const ENV: TEnvironment =
   (process.env.NEXT_PUBLIC_CONFIGURATION as TEnvironment) ||
   (process.env.CONFIGURATION as TEnvironment) ||
   "development";
-const APP_ID = (process.env.APP_ID as TAppId) || "runners-qc-app";
+const APP_ID = (process.env.APP_ID as TAppId) || "prod-data-exporter";
 
 export type AppConfig = ReturnType<typeof getConfig>;
 
@@ -32,7 +32,7 @@ export type TAppAsset = {
   "HISA-seal-final": string;
 };
 
-export type TAppId = "runners-qc-app";
+export type TAppId = "prod-data-exporter";
 
 const ICON_ENV = getIconENV(ENV);
 
@@ -52,14 +52,14 @@ const APPS_CONFIG: TAppAsset = {
 
 const CONFIG = {
   common: {
-    appId: "runners-qc-app",
-    name: "Runners QC App",
-    shortName: "RQC",
-    fullName: "Runners QC",
-    description: "Runners QC App Web App",
+    appId: "prod-data-exporter" as TAppId,
+    name: "Prod Data Exporter",
+    shortName: "PDE",
+    fullName: "Prod Data Exporter",
+    description: "Production Data Exporter Web App",
     permission: ["runners-qc-app:access"],
     permissionName: "runners-qc-app",
-    prefix: "RQC",
+    prefix: "PDE",
     appVersion: process.env.NEXT_PUBLIC_APP_VERSION || "1.0.0",
     supportPhone: "1-877-513-2919",
     pwaInstallationRejected: "pwa_installation_rejected",
@@ -74,7 +74,7 @@ const CONFIG = {
     useAnalytics: false,
     useDynatrace: false,
     hostname: "",
-    siteUrl: "https://runners-qc-app.app/",
+    siteUrl: "https://prod-data-exporter.app/",
   },
   development: {
     useAnalytics: false,
@@ -84,7 +84,7 @@ const CONFIG = {
     REGISTER_URL: "https://portal.dev1.hisausapps.org/registration",
     environmentText: "-DEV",
     hostname: "dev1",
-    siteUrl: "https://runners-qc-app.dev/",
+    siteUrl: "https://prod-data-exporter.dev/",
   },
   qa: {
     useAnalytics: true,

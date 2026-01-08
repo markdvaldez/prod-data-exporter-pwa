@@ -1,6 +1,6 @@
 "use client";
 
-import { BottomContainer } from "@/runnersQcApp/containers/BottomContainer";
+import { BottomContainer } from "@/prodDataExporter/containers/BottomContainer";
 import routes from "@/routes";
 import { getConfig } from "@/services/appConfig";
 import { resetAuthStore } from "@/services/store/modules/auth";

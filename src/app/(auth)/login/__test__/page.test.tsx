@@ -32,7 +32,7 @@ jest.mock("@/ui-kit/blocks/CreateAccountInfo", () => ({
   CreateAccountInfo: () => <div data-testid="create-account-info" />,
 }));
 
-jest.mock("@/runnersQcApp/containers/BottomContainer", () => ({
+jest.mock("@/prodDataExporter/containers/BottomContainer", () => ({
   BottomContainer: () => <div data-testid="bottom-container" />,
 }));
 
