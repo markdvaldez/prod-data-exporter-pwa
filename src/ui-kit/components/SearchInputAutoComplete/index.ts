@@ -1,0 +1,1 @@
+export { SearchInputAutoComplete } from './SearchInputAutoComplete';

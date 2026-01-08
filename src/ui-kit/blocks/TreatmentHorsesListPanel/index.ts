@@ -1,0 +1,1 @@
+export { TreatmentHorsesListPanel } from "./TreatmentHorsesListPanel";

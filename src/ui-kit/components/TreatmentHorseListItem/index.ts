@@ -1,0 +1,1 @@
+export { TreatmentHorseListItem } from './TreatmentHorseListItem';

@@ -1,0 +1,1 @@
+export { RecentHorsesWidget } from "./RecentHorsesWidget";

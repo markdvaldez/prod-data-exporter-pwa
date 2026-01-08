@@ -1,0 +1,127 @@
+trigger:
+  branches:
+    include:
+      - Development
+  paths:
+#    include:
+#    - 
+    exclude:
+    - pipelines
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  date: $[format('{0:yyyy}-{0:MM}-{0:dd}T{0:HH}{0:mm}', pipeline.startTime)]
+  CONFIGURATION: "production"
+  APP_ID: "runners-qc-app"
+  NEXT_PUBLIC_CONFIGURATION: "production"
+  NEXT_PUBLIC_API_URL: "https://dbapi.dev1.hisausapps.org/"
+  NEXT_PUBLIC_AWS_POOL_ID: "us-east-1:81ec9c35-c66a-4329-a01d-3d0582d3039f"
+  NEXT_PUBLIC_AWS_REGION: "us-east-1"
+  NEXT_PUBLIC_AWS_USER_POOL_ID: "us-east-1_MxDxfUblP"
+  NEXT_PUBLIC_AWS_CLIENT_ID: "1d2mouehtd8o9ufjpg2hcrkr4l"
+  NEXT_PUBLIC_AVP_POLICY_STORE_ID: "T26TxhsCbii6YzbTcmy3SM"
+  NEXT_PUBLIC_GTM_ID: "GTM-KMJMP6L"
+ 
+stages:
+- stage: Build
+  displayName: Build & Push image to AWS
+  jobs:
+  - job: Build_and_Push
+    displayName: Build & Push image
+    steps:
+      - script: |
+          set -euxo pipefail
+          echo "Installing dependencies..."
+          npm install
+        displayName: "Install Dependencies" 
+      - script: |
+          # Extract new version of package.json
+          newVer=$(jq -r ".version" package.json)
+          buildId=$(Build.BuildId)
+          # Set environment variables
+          echo "##vso[task.setvariable variable=NEW_VERSION]$newVer"
+          echo "Set environment variables"
+          echo "versionName is set to $newVer"
+          echo "versionCode is set to $buildId" 
+          echo "NEXT_PUBLIC_CACHE_VERSION=v${newVer}-${buildId}" >> .env.local
+        displayName: "Set cache version"
+      - script: |
+          echo "Building Next.js app..."
+          export NODE_OPTIONS=--max-old-space-size=4096
+          TARGET_ENV=development npm run build-dev
+        env:
+          CONFIGURATION: $(CONFIGURATION)
+          NEXT_PUBLIC_CONFIGURATION: $(NEXT_PUBLIC_CONFIGURATION)
+          NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
+          NEXT_PUBLIC_AWS_POOL_ID: $(NEXT_PUBLIC_AWS_POOL_ID)
+          NEXT_PUBLIC_AWS_REGION: $(NEXT_PUBLIC_AWS_REGION)
+          NEXT_PUBLIC_AWS_USER_POOL_ID: $(NEXT_PUBLIC_AWS_USER_POOL_ID)
+          NEXT_PUBLIC_AWS_CLIENT_ID: $(NEXT_PUBLIC_AWS_CLIENT_ID)
+          NEXT_PUBLIC_AVP_POLICY_STORE_ID: $(NEXT_PUBLIC_AVP_POLICY_STORE_ID)
+          NEXT_PUBLIC_GTM_ID: $(NEXT_PUBLIC_GTM_ID)
+          AWS_REGION: $(AWS_REGION)
+        displayName: "Build Next.js App"
+
+      - script: |
+          echo "Creating artifact directory..."
+          mkdir -p $(Build.ArtifactStagingDirectory)/lltv
+          cp -r .next public package.json package-lock.json $(Build.ArtifactStagingDirectory)/lltv
+        displayName: "Prepare Artifact"
+
+      - task: BeanstalkCreateApplicationVersion@1
+        inputs:
+            awsCredentials: 'aws-dev'
+            regionName: 'us-east-1'
+            applicationName: 'lltv-dev1'
+            applicationType: 'aspnetCoreLinux' 
+            dotnetPublishPath: '$(Build.ArtifactStagingDirectory)/lltv'
+            versionLabel: 'dev-$(Build.BuildNumber)'
+
+- stage: dev1
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeployDev1
+    displayName: Deploy to DEV1
+    environment: 'dev1'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: BeanstalkDeployApplication@1
+              inputs:
+                awsCredentials: 'aws-dev'
+                regionName: 'us-east-1'
+                applicationName: 'lltv-dev1'
+                environmentName: 'lltv-dev1'
+                applicationType: 'version'
+                versionLabel: 'dev-$(Build.BuildNumber)' 
+
+# - stage: merge_to_rc
+#   jobs:
+#   - deployment: MergeDevelopmentToReleaseCandidate
+#     environment: 'merge-to-rc'
+#     strategy:
+#      runOnce:
+#        deploy:
+#         steps:
+#           - checkout: self
+#             persistCredentials: true
+#           - script: |
+#               git branch -a
+#               git fetch origin  Releases/ReleaseCandidate
+#               git branch -a
+#               git status
+#               git checkout -b Archive/RC-$(date) origin/Releases/ReleaseCandidate
+#               git push -f origin Archive/RC-$(date)
+#             displayName: 'Copy ReleaseCandidate branch'
+#           - script: |
+#               git branch -a
+#               git fetch origin  Development
+#               git branch -a
+#               git status
+#               git checkout -b Releases/ReleaseCandidate  origin/Development
+#               git push -f origin Releases/ReleaseCandidate 
+#             displayName: 'Copy Development branch to the Releases/ReleaseCandidate branch'

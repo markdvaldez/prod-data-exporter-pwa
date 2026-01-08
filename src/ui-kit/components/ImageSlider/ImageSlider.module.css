@@ -1,0 +1,133 @@
+.sliderRoot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 700px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #0f172a;
+  color: #f9fafb;
+}
+
+.imageWrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.overlayGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top right,
+    rgba(15, 23, 42, 0.92),
+    rgba(15, 23, 42, 0.4)
+  );
+}
+
+.content {
+  position: absolute;
+  bottom: 3%;
+  z-index: 1;
+  height: 100%;
+  padding: 32px 32px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.title {
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  max-width: 100%;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 420px;
+  opacity: 0.9;
+}
+
+.dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(148, 163, 184, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dotActive {
+  width: 18px;
+  background: #38bdf8;
+}
+
+.dot:hover {
+  background: rgba(148, 163, 184, 0.9);
+}
+
+.fadeIn {
+  animation: sliderFadeIn 0.8s ease-in-out;
+}
+
+.fadeUp {
+  animation: sliderFadeUp 0.8s ease-out;
+}
+
+@keyframes sliderFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes sliderFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Optional responsiveness */
+
+@media (max-width: 768px) {
+  .sliderRoot {
+    border-radius: 0;
+    min-height: 260px;
+  }
+
+  .content {
+    padding: 24px 20px 20px 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .description {
+    font-size: 13px;
+  }
+}

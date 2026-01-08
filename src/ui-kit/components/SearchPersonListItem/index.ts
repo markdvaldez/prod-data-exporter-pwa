@@ -1,0 +1,1 @@
+export { SearchPersonListItem } from "./SearchPersonListItem";

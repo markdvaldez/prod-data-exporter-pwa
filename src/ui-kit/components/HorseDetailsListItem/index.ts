@@ -1,0 +1,1 @@
+export { HorseDetailsListItem } from "./HorseDetailsListItem";

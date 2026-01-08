@@ -1,0 +1,1 @@
+export { ConfirmTreatmentLocation } from "./ConfirmTreatmentLocation";

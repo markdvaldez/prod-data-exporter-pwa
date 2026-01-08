@@ -1,0 +1,1 @@
+export { TreatmentProtocolsWidget } from "./TreatmentProtocolsWidget";

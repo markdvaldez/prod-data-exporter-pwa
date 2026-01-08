@@ -1,0 +1,1 @@
+export { FilePreviewSquare } from './FilePreviewSquare';

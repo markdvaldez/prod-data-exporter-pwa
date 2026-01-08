@@ -1,0 +1,1 @@
+export { LoaderLottie } from "./LoaderLottie";

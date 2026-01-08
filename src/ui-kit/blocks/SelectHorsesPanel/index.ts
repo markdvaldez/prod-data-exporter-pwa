@@ -1,0 +1,1 @@
+export { SelectHorsesPanel } from "./SelectHorsesPanel";

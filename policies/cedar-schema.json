@@ -1,0 +1,96 @@
+{
+  "LongLivedTransactionsViewer": {
+    "entityTypes": {
+      "Person": {
+        "memberOfTypes": [],
+        "shape": {
+          "type": "Record",
+          "attributes": {
+            "hisaPersonId": {
+              "type": "String",
+              "required": true
+            },
+            "name": {
+              "type": "String",
+              "required": false
+            },
+            "displayName": {
+              "type": "String",
+              "required": false
+            },
+            "roles": {
+              "required": false,
+              "type": "Set",
+              "element": {
+                "type": "String"
+              }
+            },
+            "generalAuthGroups": {
+              "required": false,
+              "type": "Set",
+              "element": {
+                "type": "String"
+              }
+            },
+            "organizationId": {
+              "type": "String",
+              "required": false
+            },
+            "isActive": {
+              "type": "Boolean",
+              "required": false
+            }
+          }
+        }
+      },
+      "TransactionLogs": {
+        "memberOfTypes": [],
+        "shape": {
+          "type": "Record",
+          "attributes": {
+            "Transaction_ID": {
+              "type": "String",
+              "required": true
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "view": {
+        "appliesTo": {
+          "context": {
+            "type": "Record",
+            "attributes": {
+              "timestamp": {
+                "type": "String",
+                "required": false
+              },
+              "generalAuthGroups": {
+                "required": false,
+                "type": "Set",
+                "element": {
+                  "type": "String"
+                }
+              },
+              "requestSource": {
+                "type": "String",
+                "required": false
+              },
+              "authenticatedPersonId": {
+                "type": "String",
+                "required": false
+              },
+              "auditLogged": {
+                "type": "Boolean",
+                "required": false
+              }
+            }
+          },
+          "principalTypes": ["Person"],
+          "resourceTypes": ["TransactionLogs"]
+        }
+      }
+    }
+  }
+}

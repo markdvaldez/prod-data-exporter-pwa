@@ -1,0 +1,1 @@
+export { DynatraceScript } from "./DynatraceScript";

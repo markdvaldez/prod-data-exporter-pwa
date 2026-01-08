@@ -1,0 +1,19 @@
+import { cn } from "@/ui-kit/lib/utils";
+import React from "react";
+
+const SidebarGroup = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      data-sidebar="group"
+      className={cn("relative flex w-full min-w-0 flex-col p-2", className)}
+      {...props}
+    />
+  );
+});
+SidebarGroup.displayName = "SidebarGroup";
+
+export { SidebarGroup };

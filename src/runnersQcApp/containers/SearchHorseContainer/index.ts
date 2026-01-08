@@ -1,0 +1,1 @@
+export { SearchHorseContainer } from './SearchHorseContainer';

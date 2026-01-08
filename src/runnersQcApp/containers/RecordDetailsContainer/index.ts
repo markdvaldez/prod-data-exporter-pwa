@@ -1,0 +1,1 @@
+export { RecordDetailsContainer } from './RecordDetailsContainer';

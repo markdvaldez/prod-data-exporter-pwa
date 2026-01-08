@@ -1,0 +1,1 @@
+export { BottomText } from "./BottomText";
