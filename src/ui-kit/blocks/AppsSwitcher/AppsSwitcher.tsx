@@ -26,8 +26,8 @@ export const AppsSwitcher: React.FC<AppsSwitcherProps> = ({ name, logo }) => {
             size="lg"
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground hover:bg-inherit active:bg-inherit"
           >
-            <Image priority alt="Logo" src={logo} width={45} height={45} />
-            <div className="grid flex-1 text-left text-lg sm:text-xl leading-tight">
+            <Image priority alt="Logo" src={logo} width={40} height={40} />
+            <div className="grid flex-1 text-left text-lg sm:text-lg leading-tight">
               <span className="text-grass font-semibold">{name}</span>
             </div>
           </SidebarMenuButton>
