@@ -1,0 +1,3856 @@
+schema {
+  query: RootQuery
+}
+
+"""
+The purpose of the `cost` directive is to define a `weight` for GraphQL types, fields, and arguments. Static analysis can use these weights when calculating the overall cost of a query or response.
+"""
+directive @cost(
+  """
+  The `weight` argument defines what value to add to the overall cost for every appearance, or possible appearance, of a type, field, argument, etc.
+  """
+  weight: String!
+) on ARGUMENT_DEFINITION | ENUM | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | OBJECT | SCALAR
+
+"""
+The purpose of the `@listSize` directive is to either inform the static analysis about the size of returned lists (if that information is statically available), or to point the analysis to where to find that information.
+"""
+directive @listSize(
+  """
+  The `assumedSize` argument can be used to statically define the maximum length of a list returned by a field.
+  """
+  assumedSize: Int
+
+  """
+  The `requireOneSlicingArgument` argument can be used to inform the static analysis that it should expect that exactly one of the defined slicing arguments is present in a query. If that is not the case (i.e., if none or multiple slicing arguments are present), the static analysis may throw an error.
+  """
+  requireOneSlicingArgument: Boolean! = true
+
+  """
+  The `sizedFields` argument can be used to define that the value of the `assumedSize` argument or of a slicing argument does not affect the size of a list returned by a field itself, but that of a list returned by one of its sub-fields.
+  """
+  sizedFields: [String!]
+
+  """
+  The `slicingArgumentDefaultValue` argument can be used to define a default value for a slicing argument, which is used if the argument is not present in a query.
+  """
+  slicingArgumentDefaultValue: Int
+
+  """
+  The `slicingArguments` argument can be used to define which of the field's arguments with numeric type are slicing arguments, so that their value determines the size of the list returned by that field. It may specify a list of multiple slicing arguments.
+  """
+  slicingArguments: [String!]
+) on FIELD_DEFINITION
+
+type Address {
+  city: String!
+  country: String!
+  state: String!
+  street: String!
+  unitAptBoxNumber: String!
+  zipPostalCode: String!
+}
+
+input AddressFilterInput {
+  and: [AddressFilterInput!]
+  city: StringOperationFilterInput
+  country: StringOperationFilterInput
+  or: [AddressFilterInput!]
+  state: StringOperationFilterInput
+  street: StringOperationFilterInput
+  unitAptBoxNumber: StringOperationFilterInput
+  zipPostalCode: StringOperationFilterInput
+}
+
+input AddressSortInput {
+  city: SortEnumType
+  country: SortEnumType
+  state: SortEnumType
+  street: SortEnumType
+  unitAptBoxNumber: SortEnumType
+  zipPostalCode: SortEnumType
+}
+
+type AiProcessing {
+  classifiedAsType: String!
+  date: DateTime!
+  humanOutputRectype: String!
+  humanRequired: Boolean!
+  incompleteInformation: Boolean!
+  mismatch: Boolean!
+  modelName: String!
+  modelOutputMissingData: Boolean!
+  modelOutputRecType: String!
+  modelVersion: String!
+  submittedRecType: HorseTreatmentType!
+}
+
+input AiProcessingFilterInput {
+  and: [AiProcessingFilterInput!]
+  classifiedAsType: StringOperationFilterInput
+  date: DateTimeOperationFilterInput
+  humanOutputRectype: StringOperationFilterInput
+  humanRequired: BooleanOperationFilterInput
+  incompleteInformation: BooleanOperationFilterInput
+  mismatch: BooleanOperationFilterInput
+  modelName: StringOperationFilterInput
+  modelOutputMissingData: BooleanOperationFilterInput
+  modelOutputRecType: StringOperationFilterInput
+  modelVersion: StringOperationFilterInput
+  or: [AiProcessingFilterInput!]
+  submittedRecType: HorseTreatmentTypeOperationFilterInput
+}
+
+type BasicHorse {
+  horseId: String!
+  name: String
+}
+
+input BasicHorseFilterInput {
+  and: [BasicHorseFilterInput!]
+  horseId: StringOperationFilterInput
+  name: StringOperationFilterInput
+  or: [BasicHorseFilterInput!]
+}
+
+type BasicLocationEntity {
+  addresses: [LocationAddressEntity!]!
+  contacts: [LocationContactsEntity!]!
+  dateExtensions: [LocationScheduleExceptionEntity!]!
+  locationId: String!
+  name: String
+  schedules: [LocationScheduleEntity!]!
+}
+
+input BasicLocationEntityFilterInput {
+  addresses: ListFilterInputTypeOfLocationAddressEntityFilterInput
+  and: [BasicLocationEntityFilterInput!]
+  contacts: ListFilterInputTypeOfLocationContactsEntityFilterInput
+  dateExtensions: ListFilterInputTypeOfLocationScheduleExceptionEntityFilterInput
+  locationId: StringOperationFilterInput
+  name: StringOperationFilterInput
+  or: [BasicLocationEntityFilterInput!]
+  schedules: ListFilterInputTypeOfLocationScheduleEntityFilterInput
+}
+
+input BasicLocationEntitySortInput {
+  locationId: SortEnumType
+  name: SortEnumType
+}
+
+input BooleanOperationFilterInput {
+  eq: Boolean
+  neq: Boolean
+}
+
+enum CalledInType {
+  ATTENDING_VET
+  OFFICE
+  OTHER
+  REG_VET
+  STEWARD
+  TRAINER
+}
+
+input CalledInTypeOperationFilterInput {
+  eq: CalledInType
+  in: [CalledInType!]
+  neq: CalledInType
+  nin: [CalledInType!]
+}
+
+type CanRaceHorseResponse {
+  canEnter: Boolean!
+  canEnterReason: String
+  canRace: Boolean!
+  canWork: Boolean!
+  canWorkReason: String
+  date: Date!
+  id: String!
+  reason: String
+}
+
+"""Information about the offset pagination."""
+type CollectionSegmentInfo {
+  """
+  Indicates whether more items exist following the set defined by the clients arguments.
+  """
+  hasNextPage: Boolean!
+
+  """
+  Indicates whether more items exist prior the set defined by the clients arguments.
+  """
+  hasPreviousPage: Boolean!
+}
+
+input CoordinateEqualityComparerFilterInput {
+  and: [CoordinateEqualityComparerFilterInput!]
+  or: [CoordinateEqualityComparerFilterInput!]
+}
+
+input CoordinateFilterInput {
+  and: [CoordinateFilterInput!]
+  coordinateValue: CoordinateFilterInput
+  isValid: BooleanOperationFilterInput
+  m: FloatOperationFilterInput
+  or: [CoordinateFilterInput!]
+  x: FloatOperationFilterInput
+  y: FloatOperationFilterInput
+  z: FloatOperationFilterInput
+}
+
+input CoordinateSequenceFactoryFilterInput {
+  and: [CoordinateSequenceFactoryFilterInput!]
+  or: [CoordinateSequenceFactoryFilterInput!]
+  ordinates: OrdinatesOperationFilterInput
+}
+
+input CoordinateSequenceFilterInput {
+  and: [CoordinateSequenceFilterInput!]
+  count: IntOperationFilterInput
+  dimension: IntOperationFilterInput
+  first: CoordinateFilterInput
+  hasM: BooleanOperationFilterInput
+  hasZ: BooleanOperationFilterInput
+  last: CoordinateFilterInput
+  mOrdinateIndex: IntOperationFilterInput
+  measures: IntOperationFilterInput
+  or: [CoordinateSequenceFilterInput!]
+  ordinates: OrdinatesOperationFilterInput
+  spatial: IntOperationFilterInput
+  zOrdinateIndex: IntOperationFilterInput
+}
+
+"""A coordinate is an array of positions."""
+scalar Coordinates
+
+type CoveredHorseExtendedResponse {
+  allMessageCount: Int!
+  canRace: CanRaceHorseResponse
+  clearanceInfo: HorseVetClearanceInfoResponse
+  daysSinceLastRace: Int
+  daysUtilEarliestOff: Int
+  lastRace: Date
+  unreadMessageCount: Int!
+  vetListEarliestOffDate: Date @deprecated(reason: "Use VetListInfo instead")
+  vetListInfo: HorseVetListInfoResponse
+}
+
+"""The `Date` scalar represents an ISO-8601 compliant date type."""
+scalar Date
+
+input DateOperationFilterInput {
+  eq: Date
+  gt: Date
+  gte: Date
+  in: [Date]
+  lt: Date
+  lte: Date
+  neq: Date
+  ngt: Date
+  ngte: Date
+  nin: [Date]
+  nlt: Date
+  nlte: Date
+}
+
+input DateRangeInput {
+  endDate: Date
+  startDate: Date
+}
+
+"""The `DateTime` scalar represents an ISO-8601 compliant date time type."""
+scalar DateTime
+
+input DateTimeOperationFilterInput {
+  eq: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime]
+  lt: DateTime
+  lte: DateTime
+  neq: DateTime
+  ngt: DateTime
+  ngte: DateTime
+  nin: [DateTime]
+  nlt: DateTime
+  nlte: DateTime
+}
+
+enum DayOfWeek {
+  FRIDAY
+  MONDAY
+  SATURDAY
+  SUNDAY
+  THURSDAY
+  TUESDAY
+  WEDNESDAY
+}
+
+input DayOfWeekOperationFilterInput {
+  eq: DayOfWeek
+  in: [DayOfWeek!]
+  neq: DayOfWeek
+  nin: [DayOfWeek!]
+}
+
+enum Dimension {
+  COLLAPSE
+  CURVE
+  DONTCARE
+  FALSE
+  POINT
+  SURFACE
+  TRUE
+}
+
+input DimensionOperationFilterInput {
+  eq: Dimension
+  in: [Dimension!]
+  neq: Dimension
+  nin: [Dimension!]
+}
+
+type DiscussionEntity {
+  createdAt: DateTime!
+  createdBy: String!
+  discussionId: Int!
+  discussionType: DiscussionType!
+  isArchived: Boolean!
+  isDeleted: Boolean!
+  members: [DiscussionMemberEntity!]!
+  messages: [DiscussionMessageEntity!]!
+  title: String
+}
+
+input DiscussionEntityFilterInput {
+  and: [DiscussionEntityFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  createdBy: StringOperationFilterInput
+  discussionId: IntOperationFilterInput
+  discussionType: DiscussionTypeOperationFilterInput
+  isArchived: BooleanOperationFilterInput
+  isDeleted: BooleanOperationFilterInput
+  members: ListFilterInputTypeOfDiscussionMemberEntityFilterInput
+  messages: ListFilterInputTypeOfDiscussionMessageEntityFilterInput
+  or: [DiscussionEntityFilterInput!]
+  title: StringOperationFilterInput
+}
+
+type DiscussionMemberEntity {
+  addedAt: DateTime!
+  discussionId: Int!
+  discussionMemberId: Int!
+  personId: String!
+  readMessageId: Long
+}
+
+input DiscussionMemberEntityFilterInput {
+  addedAt: DateTimeOperationFilterInput
+  and: [DiscussionMemberEntityFilterInput!]
+  discussionId: IntOperationFilterInput
+  discussionMemberId: IntOperationFilterInput
+  or: [DiscussionMemberEntityFilterInput!]
+  personId: StringOperationFilterInput
+  readMessageId: LongOperationFilterInput
+}
+
+type DiscussionMessageAttachmentEntity {
+  discussionId: Int!
+  discussionMessageAttachmentId: Long!
+  discussionMessageId: Long!
+  documentUuid: String!
+  isDeleted: Boolean!
+}
+
+input DiscussionMessageAttachmentEntityFilterInput {
+  and: [DiscussionMessageAttachmentEntityFilterInput!]
+  discussionId: IntOperationFilterInput
+  discussionMessageAttachmentId: LongOperationFilterInput
+  discussionMessageId: LongOperationFilterInput
+  documentUuid: StringOperationFilterInput
+  isDeleted: BooleanOperationFilterInput
+  or: [DiscussionMessageAttachmentEntityFilterInput!]
+}
+
+type DiscussionMessageEntity {
+  attachments: [DiscussionMessageAttachmentEntity!]!
+  content: String!
+  discussionId: Int!
+  discussionMessageId: Long!
+  isDeleted: Boolean!
+  personId: String!
+  sentAt: DateTime!
+}
+
+input DiscussionMessageEntityFilterInput {
+  and: [DiscussionMessageEntityFilterInput!]
+  attachments: ListFilterInputTypeOfDiscussionMessageAttachmentEntityFilterInput
+  content: StringOperationFilterInput
+  discussionId: IntOperationFilterInput
+  discussionMessageId: LongOperationFilterInput
+  isDeleted: BooleanOperationFilterInput
+  or: [DiscussionMessageEntityFilterInput!]
+  personId: StringOperationFilterInput
+  sentAt: DateTimeOperationFilterInput
+}
+
+enum DiscussionType {
+  PERSONAL
+}
+
+input DiscussionTypeOperationFilterInput {
+  eq: DiscussionType
+  in: [DiscussionType!]
+  neq: DiscussionType
+  nin: [DiscussionType!]
+}
+
+input EnvelopeFilterInput {
+  and: [EnvelopeFilterInput!]
+  area: FloatOperationFilterInput
+  centre: CoordinateFilterInput
+  diameter: FloatOperationFilterInput
+  height: FloatOperationFilterInput
+  isNull: BooleanOperationFilterInput
+  maxExtent: FloatOperationFilterInput
+  maxX: FloatOperationFilterInput
+  maxY: FloatOperationFilterInput
+  minExtent: FloatOperationFilterInput
+  minX: FloatOperationFilterInput
+  minY: FloatOperationFilterInput
+  or: [EnvelopeFilterInput!]
+  width: FloatOperationFilterInput
+}
+
+input FloatOperationFilterInput {
+  eq: Float
+  gt: Float
+  gte: Float
+  in: [Float]
+  lt: Float
+  lte: Float
+  neq: Float
+  ngt: Float
+  ngte: Float
+  nin: [Float]
+  nlt: Float
+  nlte: Float
+}
+
+enum GeoJSONGeometryType {
+  GeometryCollection
+  LineString
+  MultiLineString
+  MultiPoint
+  MultiPolygon
+  Point
+  Polygon
+}
+
+interface GeoJSONInterface {
+  """The minimum bounding box around the geometry object"""
+  bbox: [Float]
+
+  """The coordinate reference system integer identifier"""
+  crs: Int
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType!
+}
+
+input GeoJSONLineStringInput {
+  """The "coordinates" field is an array of two or more positions."""
+  coordinates: [Position]
+
+  """The coordinate reference system integer identifier"""
+  crs: Int
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType
+}
+
+type GeoJSONLineStringType implements GeoJSONInterface {
+  """The minimum bounding box around the geometry object"""
+  bbox: [Float!]!
+
+  """The "coordinates" field is an array of two or more positions."""
+  coordinates: [Position]
+
+  """The coordinate reference system integer identifier"""
+  crs: Int!
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType!
+}
+
+input GeoJSONMultiLineStringInput {
+  """The "coordinates" field is an array of LineString coordinate arrays."""
+  coordinates: [[Position]]
+
+  """The coordinate reference system integer identifier"""
+  crs: Int
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType
+}
+
+type GeoJSONMultiLineStringType implements GeoJSONInterface {
+  """The minimum bounding box around the geometry object"""
+  bbox: [Float!]!
+
+  """The "coordinates" field is an array of LineString coordinate arrays."""
+  coordinates: [Position]
+
+  """The coordinate reference system integer identifier"""
+  crs: Int!
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType!
+}
+
+input GeoJSONMultiPointInput {
+  """The "coordinates" field is an array of positions."""
+  coordinates: [Position]
+
+  """The coordinate reference system integer identifier"""
+  crs: Int
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType
+}
+
+type GeoJSONMultiPointType implements GeoJSONInterface {
+  """The minimum bounding box around the geometry object"""
+  bbox: [Float!]!
+
+  """The "coordinates" field is an array of positions."""
+  coordinates: [Position]
+
+  """The coordinate reference system integer identifier"""
+  crs: Int!
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType!
+}
+
+input GeoJSONMultiPolygonInput {
+  """The "coordinates" field is an array of Polygon coordinate arrays."""
+  coordinates: Coordinates
+
+  """The coordinate reference system integer identifier"""
+  crs: Int
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType
+}
+
+type GeoJSONMultiPolygonType implements GeoJSONInterface {
+  """The minimum bounding box around the geometry object"""
+  bbox: [Float!]!
+
+  """The "coordinates" field is an array of Polygon coordinate arrays."""
+  coordinates: Coordinates
+
+  """The coordinate reference system integer identifier"""
+  crs: Int!
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType!
+}
+
+input GeoJSONPointInput {
+  """The "coordinates" field is a single position."""
+  coordinates: Position
+
+  """The coordinate reference system integer identifier"""
+  crs: Int
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType
+}
+
+type GeoJSONPointType implements GeoJSONInterface {
+  """The minimum bounding box around the geometry object"""
+  bbox: [Float!]!
+
+  """The "coordinates" field is a single position."""
+  coordinates: Position
+
+  """The coordinate reference system integer identifier"""
+  crs: Int!
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType!
+}
+
+input GeoJSONPolygonInput {
+  """
+  The "coordinates" field MUST be an array of linear ring coordinate arrays. For Polygons with more than one of these rings, the first MUST be the exterior ring, and any others MUST be interior rings. The exterior ring bounds the surface, and the interior rings (if present) bound holes within the surface.
+  """
+  coordinates: [[Position]]
+
+  """The coordinate reference system integer identifier"""
+  crs: Int
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType
+}
+
+type GeoJSONPolygonType implements GeoJSONInterface {
+  """The minimum bounding box around the geometry object"""
+  bbox: [Float!]!
+
+  """
+  The "coordinates" field MUST be an array of linear ring coordinate arrays. For Polygons with more than one of these rings, the first MUST be the exterior ring, and any others MUST be interior rings. The exterior ring bounds the surface, and the interior rings (if present) bound holes within the surface.
+  """
+  coordinates: [[Position]]
+
+  """The coordinate reference system integer identifier"""
+  crs: Int!
+
+  """The geometry type of the GeoJson object"""
+  type: GeoJSONGeometryType!
+}
+
+type GeoLocation {
+  latitude: Float!
+  longitude: Float!
+  toQueryString(nameOfContext: String!): QueryString!
+}
+
+input GeoLocationFilterInput {
+  and: [GeoLocationFilterInput!]
+  latitude: FloatOperationFilterInput
+  longitude: FloatOperationFilterInput
+  or: [GeoLocationFilterInput!]
+}
+
+input GeoLocationSortInput {
+  latitude: SortEnumType
+  longitude: SortEnumType
+}
+
+scalar Geometry
+
+input GeometryFactoryFilterInput {
+  and: [GeometryFactoryFilterInput!]
+  coordinateSequenceFactory: CoordinateSequenceFactoryFilterInput
+  geometryServices: NtsGeometryServicesFilterInput
+  or: [GeometryFactoryFilterInput!]
+  precisionModel: PrecisionModelFilterInput
+  srid: IntOperationFilterInput
+}
+
+input GeometryFilterInput {
+  and: [GeometryFilterInput!]
+  area: FloatOperationFilterInput
+  boundary: GeometryFilterInput
+  boundaryDimension: DimensionOperationFilterInput
+  centroid: PointFilterInput
+  coordinate: CoordinateFilterInput
+  coordinates: ListFilterInputTypeOfCoordinateFilterInput
+  dimension: DimensionOperationFilterInput
+  envelope: GeometryFilterInput
+  envelopeInternal: EnvelopeFilterInput
+  factory: GeometryFactoryFilterInput
+  geometryType: StringOperationFilterInput
+  interiorPoint: PointFilterInput
+  isEmpty: BooleanOperationFilterInput
+  isRectangle: BooleanOperationFilterInput
+  isSimple: BooleanOperationFilterInput
+  isValid: BooleanOperationFilterInput
+  length: FloatOperationFilterInput
+  numGeometries: IntOperationFilterInput
+  numPoints: IntOperationFilterInput
+  ogcGeometryType: OgcGeometryTypeOperationFilterInput
+  or: [GeometryFilterInput!]
+  pointOnSurface: PointFilterInput
+  precisionModel: PrecisionModelFilterInput
+  srid: IntOperationFilterInput
+}
+
+input GeometryOverlayFilterInput {
+  and: [GeometryOverlayFilterInput!]
+  or: [GeometryOverlayFilterInput!]
+}
+
+"""A segment of a collection."""
+type HorseAppointmentByIdCollectionSegment {
+  """A flattened list of the items."""
+  items: [HorseAppointmentEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type HorseAppointmentEntity {
+  endDateTime: DateTime!
+  horseAppointmentId: Int!
+  horseId: String!
+  personSchedule: PersonScheduleEntity!
+  personScheduleId: Int!
+  rtrReportId: Int
+  startDateTime: DateTime!
+}
+
+input HorseAppointmentEntityFilterInput {
+  and: [HorseAppointmentEntityFilterInput!]
+  endDateTime: DateTimeOperationFilterInput
+  horseAppointmentId: IntOperationFilterInput
+  horseId: StringOperationFilterInput
+  or: [HorseAppointmentEntityFilterInput!]
+  personSchedule: PersonScheduleEntityFilterInput
+  personScheduleId: IntOperationFilterInput
+  rtrReportId: IntOperationFilterInput
+  startDateTime: DateTimeOperationFilterInput
+}
+
+input HorseAppointmentEntitySortInput {
+  endDateTime: SortEnumType
+  horseAppointmentId: SortEnumType
+  horseId: SortEnumType
+  personSchedule: PersonScheduleEntitySortInput
+  personScheduleId: SortEnumType
+  rtrReportId: SortEnumType
+  startDateTime: SortEnumType
+}
+
+"""A segment of a collection."""
+type HorseAppointmentsByLocationDateRangeCollectionSegment {
+  """A flattened list of the items."""
+  items: [HorseAppointmentEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+"""A segment of a collection."""
+type HorseAppointmentsCollectionSegment {
+  """A flattened list of the items."""
+  items: [HorseAppointmentEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type HorseLocationReport {
+  address: Address
+  createdAt: DateTime!
+  geoLocation: GeoLocation
+  hisaHorseId: String!
+  locationId: String
+  sourceId: String!
+  sourceKind: String!
+  timestamp: String!
+}
+
+"""A segment of a collection."""
+type HorseLocationReportByIdCollectionSegment {
+  """A flattened list of the items."""
+  items: [HorseLocationReport]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+"""A segment of a collection."""
+type HorseLocationReportCollectionSegment {
+  """A flattened list of the items."""
+  items: [HorseLocationReport]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+input HorseLocationReportFilterInput {
+  address: AddressFilterInput
+  and: [HorseLocationReportFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  geoLocation: GeoLocationFilterInput
+  hisaHorseId: StringOperationFilterInput
+  locationId: StringOperationFilterInput
+  or: [HorseLocationReportFilterInput!]
+  sourceId: StringOperationFilterInput
+  sourceKind: StringOperationFilterInput
+  timestamp: StringOperationFilterInput
+}
+
+input HorseLocationReportSortInput {
+  address: AddressSortInput
+  createdAt: SortEnumType
+  geoLocation: GeoLocationSortInput
+  hisaHorseId: SortEnumType
+  locationId: SortEnumType
+  sourceId: SortEnumType
+  sourceKind: SortEnumType
+  timestamp: SortEnumType
+}
+
+enum HorseMedicalRecType {
+  ACUPUNCTURE
+  ALTERNATIVE_TREATMENTS
+  BISPHOSPHONATES
+  CHIROPRACTIC
+  CLEAR_BY_REG_VET
+  DEATH
+  DEATH_REPORT
+  DENTAL
+  DEWORMING
+  DISPENSED_MEDS
+  DRUG_ADMINISTERED
+  ENDOSCOPY
+  EXAM
+  FOLLOWUP
+  IMAGING
+  INSPECTION
+  INTRAARTICULAR_INJECTION
+  INTRALESIONAL_INJECTION
+  MANDATORY_PRE_RACE_AND_PRE_WORK_VET_INSPECTION
+  NECROPSY
+  OTHER
+  PHYSIOTHERAPY
+  PROCEDURE
+  RACE_INSPECTION
+  RETIRED
+  SHOCKWAVE
+  SURGERY
+  TEST
+  TREATMENT
+  VACCINE
+  VET_INSPECTION
+}
+
+enum HorseMedicalRouteAdmin {
+  CREAM
+  IA
+  IM
+  INHALATION
+  INTRALESIONAL
+  INTRANASAL
+  IV
+  NG
+  OPHTHALMIC
+  ORAL
+  OTHER
+  PO
+  SUB_Q
+  TOPICAL
+  TRANSDERMAL
+  UNKNOWN
+  UNSPECIFIED
+}
+
+input HorseMedicalRouteAdminOperationFilterInput {
+  eq: HorseMedicalRouteAdmin
+  in: [HorseMedicalRouteAdmin!]
+  neq: HorseMedicalRouteAdmin
+  nin: [HorseMedicalRouteAdmin!]
+}
+
+type HorseTreatment {
+  activity: RecordActivity!
+  aiProcessing: [AiProcessing!]!
+  datagramPath: String!
+  hisaId: String!
+  horseId: String!
+  horseMedicalId: String!
+  isDeleted: Boolean!
+  people: TreatmentRecordPeople!
+  rawPayloadPath: String!
+  recType: HorseTreatmentType!
+  sk: String!
+  treatmentDate: Date!
+  treatmentRecordId: String!
+  uuid: String!
+}
+
+"""A segment of a collection."""
+type HorseTreatmentByIdCollectionSegment {
+  """A flattened list of the items."""
+  items: [HorseTreatment]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+"""A segment of a collection."""
+type HorseTreatmentCollectionSegment {
+  """A flattened list of the items."""
+  items: [HorseTreatment]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+input HorseTreatmentFilterInput {
+  activity: RecordActivityFilterInput
+  aiProcessing: ListFilterInputTypeOfAiProcessingFilterInput
+  and: [HorseTreatmentFilterInput!]
+  datagramPath: StringOperationFilterInput
+  hisaId: StringOperationFilterInput
+  horseId: StringOperationFilterInput
+  horseMedicalId: StringOperationFilterInput
+  isDeleted: BooleanOperationFilterInput
+  or: [HorseTreatmentFilterInput!]
+  people: TreatmentRecordPeopleFilterInput
+  rawPayloadPath: StringOperationFilterInput
+  recType: HorseTreatmentTypeOperationFilterInput
+  sk: StringOperationFilterInput
+  treatmentDate: DateOperationFilterInput
+  treatmentRecordId: StringOperationFilterInput
+  uuid: StringOperationFilterInput
+}
+
+input HorseTreatmentSortInput {
+  activity: RecordActivitySortInput
+  datagramPath: SortEnumType
+  hisaId: SortEnumType
+  horseId: SortEnumType
+  horseMedicalId: SortEnumType
+  isDeleted: SortEnumType
+  people: TreatmentRecordPeopleSortInput
+  rawPayloadPath: SortEnumType
+  recType: SortEnumType
+  sk: SortEnumType
+  treatmentDate: SortEnumType
+  treatmentRecordId: SortEnumType
+  uuid: SortEnumType
+}
+
+enum HorseTreatmentType {
+  ACUPUNCTURE
+  ALTERNATIVE_THERAPIES
+  BLOOD_DRAW
+  CARDIAC
+  CHIROPRACTIC
+  CLEARBY_REG_VET
+  COLIC
+  DEATH
+  DENTAL_CARE
+  DEWORMING
+  DIAGNOSTIC_IMAGING
+  DIAGNOSTIC_TESTS
+  DRUG_ADMINISTERED
+  DRUG_DISPENSED
+  ENDOSCOPY
+  EXAM
+  FLUID_AND_ELECTROLYTE_THERAPY
+  HEALTH_CERTIFICATE
+  HOOF_CARE
+  INJURY
+  INTRALESIONAL_INJECTION
+  INTRA_ARTICULAR_INJECTION
+  LAMENESS_EXAM
+  LASIX
+  MANDATORY_ATTENDING_VET_INSPECTION
+  NECROPSY
+  OTHER
+  PROCEDURE
+  RETIREMENT
+  SHOCKWAVE
+  SURGERY
+  UNKNOWN
+  VACCINES
+}
+
+input HorseTreatmentTypeOperationFilterInput {
+  eq: HorseTreatmentType
+  in: [HorseTreatmentType!]
+  neq: HorseTreatmentType
+  nin: [HorseTreatmentType!]
+}
+
+type HorseVetClearanceInfoResponse {
+  clearedOn: Date!
+  clearedUntil: Date!
+  type: HorseVetClearanceType!
+}
+
+enum HorseVetClearanceType {
+  HORSE_MEDICAL
+  POST_LAYOFF_REPORT
+  WORK_OFF
+}
+
+type HorseVetListInfoResponse {
+  datePlaceOnList: Date!
+  dateToComeOff: Date
+  eligibleToWork: Date
+  isRegVetClearRequired: Boolean!
+  reason: VetsListReason
+  releaseDate: Date
+  restrictWorks: Boolean!
+}
+
+input IntOperationFilterInput {
+  eq: Int
+  gt: Int
+  gte: Int
+  in: [Int]
+  lt: Int
+  lte: Int
+  neq: Int
+  ngt: Int
+  ngte: Int
+  nin: [Int]
+  nlt: Int
+  nlte: Int
+}
+
+input ListFilterInputTypeOfAiProcessingFilterInput {
+  all: AiProcessingFilterInput
+  any: Boolean
+  none: AiProcessingFilterInput
+  some: AiProcessingFilterInput
+}
+
+input ListFilterInputTypeOfCoordinateFilterInput {
+  all: CoordinateFilterInput
+  any: Boolean
+  none: CoordinateFilterInput
+  some: CoordinateFilterInput
+}
+
+input ListFilterInputTypeOfDiscussionMemberEntityFilterInput {
+  all: DiscussionMemberEntityFilterInput
+  any: Boolean
+  none: DiscussionMemberEntityFilterInput
+  some: DiscussionMemberEntityFilterInput
+}
+
+input ListFilterInputTypeOfDiscussionMessageAttachmentEntityFilterInput {
+  all: DiscussionMessageAttachmentEntityFilterInput
+  any: Boolean
+  none: DiscussionMessageAttachmentEntityFilterInput
+  some: DiscussionMessageAttachmentEntityFilterInput
+}
+
+input ListFilterInputTypeOfDiscussionMessageEntityFilterInput {
+  all: DiscussionMessageEntityFilterInput
+  any: Boolean
+  none: DiscussionMessageEntityFilterInput
+  some: DiscussionMessageEntityFilterInput
+}
+
+input ListFilterInputTypeOfHorseAppointmentEntityFilterInput {
+  all: HorseAppointmentEntityFilterInput
+  any: Boolean
+  none: HorseAppointmentEntityFilterInput
+  some: HorseAppointmentEntityFilterInput
+}
+
+input ListFilterInputTypeOfLocationAddressEntityFilterInput {
+  all: LocationAddressEntityFilterInput
+  any: Boolean
+  none: LocationAddressEntityFilterInput
+  some: LocationAddressEntityFilterInput
+}
+
+input ListFilterInputTypeOfLocationAppointmentEntityFilterInput {
+  all: LocationAppointmentEntityFilterInput
+  any: Boolean
+  none: LocationAppointmentEntityFilterInput
+  some: LocationAppointmentEntityFilterInput
+}
+
+input ListFilterInputTypeOfLocationContactsEntityFilterInput {
+  all: LocationContactsEntityFilterInput
+  any: Boolean
+  none: LocationContactsEntityFilterInput
+  some: LocationContactsEntityFilterInput
+}
+
+input ListFilterInputTypeOfLocationScheduleDetailEntityFilterInput {
+  all: LocationScheduleDetailEntityFilterInput
+  any: Boolean
+  none: LocationScheduleDetailEntityFilterInput
+  some: LocationScheduleDetailEntityFilterInput
+}
+
+input ListFilterInputTypeOfLocationScheduleEntityFilterInput {
+  all: LocationScheduleEntityFilterInput
+  any: Boolean
+  none: LocationScheduleEntityFilterInput
+  some: LocationScheduleEntityFilterInput
+}
+
+input ListFilterInputTypeOfLocationScheduleExceptionEntityFilterInput {
+  all: LocationScheduleExceptionEntityFilterInput
+  any: Boolean
+  none: LocationScheduleExceptionEntityFilterInput
+  some: LocationScheduleExceptionEntityFilterInput
+}
+
+input ListFilterInputTypeOfLocationSlotEntityFilterInput {
+  all: LocationSlotEntityFilterInput
+  any: Boolean
+  none: LocationSlotEntityFilterInput
+  some: LocationSlotEntityFilterInput
+}
+
+input ListFilterInputTypeOfPersonScheduleEntityFilterInput {
+  all: PersonScheduleEntityFilterInput
+  any: Boolean
+  none: PersonScheduleEntityFilterInput
+  some: PersonScheduleEntityFilterInput
+}
+
+input ListFilterInputTypeOfPostLayoffReportInjuryFilterInput {
+  all: PostLayoffReportInjuryFilterInput
+  any: Boolean
+  none: PostLayoffReportInjuryFilterInput
+  some: PostLayoffReportInjuryFilterInput
+}
+
+input ListFilterInputTypeOfPostLayoffReportMedicalRecordFilterInput {
+  all: PostLayoffReportMedicalRecordFilterInput
+  any: Boolean
+  none: PostLayoffReportMedicalRecordFilterInput
+  some: PostLayoffReportMedicalRecordFilterInput
+}
+
+input ListFilterInputTypeOfPostLayoffReportProcedureFilterInput {
+  all: PostLayoffReportProcedureFilterInput
+  any: Boolean
+  none: PostLayoffReportProcedureFilterInput
+  some: PostLayoffReportProcedureFilterInput
+}
+
+input ListFilterInputTypeOfPostLayoffReportRaceEntryFilterInput {
+  all: PostLayoffReportRaceEntryFilterInput
+  any: Boolean
+  none: PostLayoffReportRaceEntryFilterInput
+  some: PostLayoffReportRaceEntryFilterInput
+}
+
+input ListFilterInputTypeOfPostLayoffReportTreatmentFilterInput {
+  all: PostLayoffReportTreatmentFilterInput
+  any: Boolean
+  none: PostLayoffReportTreatmentFilterInput
+  some: PostLayoffReportTreatmentFilterInput
+}
+
+input ListFilterInputTypeOfPostLayoffReportVetListFilterInput {
+  all: PostLayoffReportVetListFilterInput
+  any: Boolean
+  none: PostLayoffReportVetListFilterInput
+  some: PostLayoffReportVetListFilterInput
+}
+
+input ListFilterInputTypeOfReadyToRunRaceEntryFilterInput {
+  all: ReadyToRunRaceEntryFilterInput
+  any: Boolean
+  none: ReadyToRunRaceEntryFilterInput
+  some: ReadyToRunRaceEntryFilterInput
+}
+
+input ListFilterInputTypeOfReadyToRunReportDiscussionFilterInput {
+  all: ReadyToRunReportDiscussionFilterInput
+  any: Boolean
+  none: ReadyToRunReportDiscussionFilterInput
+  some: ReadyToRunReportDiscussionFilterInput
+}
+
+input ListFilterInputTypeOfReadyToRunStatusReasonFilterInput {
+  all: ReadyToRunStatusReasonFilterInput
+  any: Boolean
+  none: ReadyToRunStatusReasonFilterInput
+  some: ReadyToRunStatusReasonFilterInput
+}
+
+input ListFilterInputTypeOfReadyToRunWorkOffReasonFilterInput {
+  all: ReadyToRunWorkOffReasonFilterInput
+  any: Boolean
+  none: ReadyToRunWorkOffReasonFilterInput
+  some: ReadyToRunWorkOffReasonFilterInput
+}
+
+input ListFilterInputTypeOfRtrReportMedicalSummaryFilterInput {
+  all: RtrReportMedicalSummaryFilterInput
+  any: Boolean
+  none: RtrReportMedicalSummaryFilterInput
+  some: RtrReportMedicalSummaryFilterInput
+}
+
+input ListFilterInputTypeOfTransportationEventAddressEntityFilterInput {
+  all: TransportationEventAddressEntityFilterInput
+  any: Boolean
+  none: TransportationEventAddressEntityFilterInput
+  some: TransportationEventAddressEntityFilterInput
+}
+
+input ListFilterInputTypeOfTransportationEventHorseEntityFilterInput {
+  all: TransportationEventHorseEntityFilterInput
+  any: Boolean
+  none: TransportationEventHorseEntityFilterInput
+  some: TransportationEventHorseEntityFilterInput
+}
+
+input ListFilterInputTypeOfTreatmentTemplateFilterInput {
+  all: TreatmentTemplateFilterInput
+  any: Boolean
+  none: TreatmentTemplateFilterInput
+  some: TreatmentTemplateFilterInput
+}
+
+input ListStringOperationFilterInput {
+  all: StringOperationFilterInput
+  any: Boolean
+  none: StringOperationFilterInput
+  some: StringOperationFilterInput
+}
+
+type LocationAccreditationModel {
+  expires: DateTime
+  status: LocationAccreditationStatus!
+}
+
+enum LocationAccreditationStatus {
+  DENIED
+  FULL
+  PROVISIONAL
+  REVOKED
+  SUSPENDED
+}
+
+type LocationAddressEntity {
+  city: String
+  country: String
+  createdAt: DateTime!
+  locationAddressId: Int!
+  locationId: String!
+  state: String
+  street: String
+  unitAptBoxNumber: String
+  zipPostalCode: String
+}
+
+input LocationAddressEntityFilterInput {
+  and: [LocationAddressEntityFilterInput!]
+  city: StringOperationFilterInput
+  country: StringOperationFilterInput
+  createdAt: DateTimeOperationFilterInput
+  locationAddressId: IntOperationFilterInput
+  locationId: StringOperationFilterInput
+  or: [LocationAddressEntityFilterInput!]
+  state: StringOperationFilterInput
+  street: StringOperationFilterInput
+  unitAptBoxNumber: StringOperationFilterInput
+  zipPostalCode: StringOperationFilterInput
+}
+
+"""A segment of a collection."""
+type LocationAppointmentByIdCollectionSegment {
+  """A flattened list of the items."""
+  items: [LocationAppointmentEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+"""A segment of a collection."""
+type LocationAppointmentCollectionSegment {
+  """A flattened list of the items."""
+  items: [LocationAppointmentEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type LocationAppointmentEntity {
+  createdAt: DateTime!
+  date: Date!
+  endTime: TimeSpan!
+  locationAppointmentId: Int!
+  locationId: String!
+  locationScheduleType: LocationScheduleType!
+  locationSlotId: Int
+  name: String!
+  personSchedules: [PersonScheduleEntity!]!
+  startTime: TimeSpan!
+}
+
+input LocationAppointmentEntityFilterInput {
+  and: [LocationAppointmentEntityFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  date: DateOperationFilterInput
+  endTime: TimeSpanOperationFilterInput
+  locationAppointmentId: IntOperationFilterInput
+  locationId: StringOperationFilterInput
+  locationScheduleType: LocationScheduleTypeOperationFilterInput
+  locationSlotId: IntOperationFilterInput
+  name: StringOperationFilterInput
+  or: [LocationAppointmentEntityFilterInput!]
+  personSchedules: ListFilterInputTypeOfPersonScheduleEntityFilterInput
+  startTime: TimeSpanOperationFilterInput
+}
+
+input LocationAppointmentEntitySortInput {
+  createdAt: SortEnumType
+  date: SortEnumType
+  endTime: SortEnumType
+  locationAppointmentId: SortEnumType
+  locationId: SortEnumType
+  locationScheduleType: SortEnumType
+  locationSlotId: SortEnumType
+  name: SortEnumType
+  startTime: SortEnumType
+}
+
+"""A segment of a collection."""
+type LocationByIdCollectionSegment {
+  """A flattened list of the items."""
+  items: [BasicLocationEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+enum LocationContactType {
+  BOOKKEEPER
+  CHIEF_STEWARD
+  CLAIMS_CLERK
+  DIRECTOR_OF_RACING
+  GENERAL_MANAGER
+  HEAD_PARAMEDIC
+  HISA_ADMIN
+  HORSESHOE_INSPECTOR
+  MEDICAL_DIRECTOR
+  RACING_SECRETARY
+  REGULATORY_VETERINARIANS
+  SAFETY_DIRECTOR
+  SAFETY_OFFICER
+  STALL_SUPERINTENDENT
+  STEWARDS
+  TRACK_SUPERINTENDENT
+}
+
+input LocationContactTypeOperationFilterInput {
+  eq: LocationContactType
+  in: [LocationContactType!]
+  neq: LocationContactType
+  nin: [LocationContactType!]
+}
+
+type LocationContactsEntity {
+  createdAt: DateTime!
+  email: String
+  locationContactId: Int!
+  locationId: String!
+  mobileNumber: String
+  name: String
+  notes: String
+  type: LocationContactType!
+}
+
+input LocationContactsEntityFilterInput {
+  and: [LocationContactsEntityFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  email: StringOperationFilterInput
+  locationContactId: IntOperationFilterInput
+  locationId: StringOperationFilterInput
+  mobileNumber: StringOperationFilterInput
+  name: StringOperationFilterInput
+  notes: StringOperationFilterInput
+  or: [LocationContactsEntityFilterInput!]
+  type: LocationContactTypeOperationFilterInput
+}
+
+type LocationDistributionLists {
+  afterCareCreated: [String!]!
+  appAccess: [String!]!
+  canceledClaim: [String!]!
+  catastrophicInjury: [String!]!
+  disqualified: [String!]!
+  enforcementTeam: [String!]!
+  executive: [String!]!
+  hisaBackOffice: [String!]!
+  horsesAtRisk: [String!]!
+  iaChanged: [String!]
+  isDisplayed: Boolean!
+  rscCommittee: [String!]!
+  violations: [String!]!
+  workoutViolations: [String!]!
+}
+
+enum LocationHisaAgreementStatus {
+  IMP_LETTER
+  IN_PROCESS
+  NONE
+  VIA
+}
+
+type LocationMeetAtTrackModel {
+  additionalDates: [Date!]!
+  excludedDates: [Date!]!
+  raceDaysOfWeek: [DayOfWeek!]!
+  startDate: DateTime!
+  stopDate: DateTime!
+}
+
+type LocationPersonDateRangeModel {
+  endDate: Date
+  hisaPersonId: String!
+  startDate: Date
+}
+
+type LocationResponse {
+  accreditation: LocationAccreditationModel!
+  address: Address!
+  admin: [String!]!
+  associationVets: [LocationPersonDateRangeModel!]!
+  claimingClerk: [String!]!
+  defaultDesignatedOwner: String
+  defaultResponsiblePerson: String
+  defaultVet: String
+  distributionLists: LocationDistributionLists!
+  email: String
+  hisaAdmin: String
+  hisaRegulated: Boolean!
+  hisaRepresentative: String
+  hisaStateAgreementStatus: LocationHisaAgreementStatus!
+  horseshoeInspectors: [LocationPersonDateRangeModel!]!
+  ignoreForAutocomplete: Boolean!
+  isLocked: Boolean!
+  latLng: GeoLocation
+  locationId: String!
+  management: [String!]!
+  meetAtTrack: [LocationMeetAtTrackModel!]!
+  name: String
+  ownerIds: [String!]!
+  phone: String
+  regulatoryVets: [LocationPersonDateRangeModel!]!
+  rswc: LocationRswc!
+  srcLocationId: String
+  srcTracks: [String!]!
+  staff: [String!]!
+  stewards: [LocationPersonDateRangeModel!]!
+  trackAgreementSignDate: Date
+  trackAgreementSigned: Boolean!
+  trackCode: [String!]!
+  trackStallSuperintendent: [LocationPersonDateRangeModel!]!
+  type: LocationType!
+  vetIds: [String!]!
+  webSite: String
+}
+
+type LocationRswc {
+  associationVet: [String!]
+  horsemanRep: [String!]
+  horseshoeInspector: [String!]
+  jockeyRep: [String!]
+  medicalDirector: [String!]
+  racingSecretary: [String!]
+  regulatoryVet: [String!]
+  safetyDirector: [String!]
+  safetyOfficer: [String!]
+  trackStuff: [String!]!
+  trackSuper: [String!]
+  trainerRep: [String!]
+}
+
+type LocationScheduleDetailEntity {
+  createdAt: DateTime!
+  dayOfWeek: DayOfWeek!
+  isActive: Boolean!
+  locationSchedule: LocationScheduleEntity!
+  locationScheduleDetailId: Int!
+  locationScheduleId: Int!
+  slots: [LocationSlotEntity!]!
+}
+
+input LocationScheduleDetailEntityFilterInput {
+  and: [LocationScheduleDetailEntityFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  dayOfWeek: DayOfWeekOperationFilterInput
+  isActive: BooleanOperationFilterInput
+  locationSchedule: LocationScheduleEntityFilterInput
+  locationScheduleDetailId: IntOperationFilterInput
+  locationScheduleId: IntOperationFilterInput
+  or: [LocationScheduleDetailEntityFilterInput!]
+  slots: ListFilterInputTypeOfLocationSlotEntityFilterInput
+}
+
+type LocationScheduleEntity {
+  createdAt: DateTime!
+  days: [LocationScheduleDetailEntity!]!
+  endDate: Date
+  locationId: String!
+  locationScheduleId: Int!
+  startDate: Date
+  type: LocationScheduleType!
+}
+
+input LocationScheduleEntityFilterInput {
+  and: [LocationScheduleEntityFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  days: ListFilterInputTypeOfLocationScheduleDetailEntityFilterInput
+  endDate: DateOperationFilterInput
+  locationId: StringOperationFilterInput
+  locationScheduleId: IntOperationFilterInput
+  or: [LocationScheduleEntityFilterInput!]
+  startDate: DateOperationFilterInput
+  type: LocationScheduleTypeOperationFilterInput
+}
+
+type LocationScheduleExceptionEntity {
+  createdAt: DateTime!
+  date: Date!
+  isActive: Boolean!
+  locationId: String!
+  locationScheduleExceptionId: Int!
+  slots: [LocationSlotEntity!]!
+  type: LocationScheduleType!
+}
+
+input LocationScheduleExceptionEntityFilterInput {
+  and: [LocationScheduleExceptionEntityFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  date: DateOperationFilterInput
+  isActive: BooleanOperationFilterInput
+  locationId: StringOperationFilterInput
+  locationScheduleExceptionId: IntOperationFilterInput
+  or: [LocationScheduleExceptionEntityFilterInput!]
+  slots: ListFilterInputTypeOfLocationSlotEntityFilterInput
+  type: LocationScheduleTypeOperationFilterInput
+}
+
+enum LocationScheduleType {
+  MEET
+  WORK
+}
+
+input LocationScheduleTypeOperationFilterInput {
+  eq: LocationScheduleType
+  in: [LocationScheduleType!]
+  neq: LocationScheduleType
+  nin: [LocationScheduleType!]
+}
+
+type LocationSlotEntity {
+  assignes: [LocationAppointmentEntity!]!
+  capacity: Int!
+  createdAt: DateTime!
+  endTime: TimeSpan!
+  locationScheduleDetail: LocationScheduleDetailEntity
+  locationScheduleDetailId: Int
+  locationScheduleException: LocationScheduleExceptionEntity
+  locationScheduleExceptionId: Int
+  locationSlotId: Int!
+  name: String!
+  startTime: TimeSpan!
+}
+
+input LocationSlotEntityFilterInput {
+  and: [LocationSlotEntityFilterInput!]
+  assignes: ListFilterInputTypeOfLocationAppointmentEntityFilterInput
+  capacity: IntOperationFilterInput
+  createdAt: DateTimeOperationFilterInput
+  endTime: TimeSpanOperationFilterInput
+  locationScheduleDetail: LocationScheduleDetailEntityFilterInput
+  locationScheduleDetailId: IntOperationFilterInput
+  locationScheduleException: LocationScheduleExceptionEntityFilterInput
+  locationScheduleExceptionId: IntOperationFilterInput
+  locationSlotId: IntOperationFilterInput
+  name: StringOperationFilterInput
+  or: [LocationSlotEntityFilterInput!]
+  startTime: TimeSpanOperationFilterInput
+}
+
+enum LocationType {
+  AFTER_CARE
+  AUCTION_HOUSE
+  DIAGNOSTIC_LAB
+  FARM
+  HISA
+  HIWU
+  INDUSTRY_GROUP
+  LAB @deprecated(reason: "Use TestingLab. Lab will be removed in future.")
+  MISCELLANEOUS
+  OTHER @deprecated(reason: "Use Miscellaneous. Other will be removed in future.")
+  OWNERSHIP_ENTITY
+  OWNERSHIP_LLC @deprecated(reason: "Use OwnershipEntity. OwnershipLLC will be removed in future.")
+  RACETRACK
+  RACING_STABLE
+  STATE
+  STATE_RACING_COMMISSION
+  TESTING_LAB
+  TRAINING_CENTER
+  TRAINING_TRACK
+  TRANSPORT
+  VET_HOSPITAL
+  VET_PRACTICE
+}
+
+"""A segment of a collection."""
+type LocationsCollectionSegment {
+  """A flattened list of the items."""
+  items: [BasicLocationEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole 64-bit numeric values. Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+input LongOperationFilterInput {
+  eq: Long
+  gt: Long
+  gte: Long
+  in: [Long]
+  lt: Long
+  lte: Long
+  neq: Long
+  ngt: Long
+  ngte: Long
+  nin: [Long]
+  nlt: Long
+  nlte: Long
+}
+
+type MedicalSummaryEntity {
+  createdAt: DateTime!
+  fileName: String!
+  horseId: String!
+  medicalSummaryId: Int!
+  periodEnd: Date!
+  periodStart: Date!
+  status: MedicalSummaryStatus!
+  summary: String
+  summaryType: MedicalSummaryType!
+}
+
+input MedicalSummaryEntityFilterInput {
+  and: [MedicalSummaryEntityFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  fileName: StringOperationFilterInput
+  horseId: StringOperationFilterInput
+  medicalSummaryId: IntOperationFilterInput
+  or: [MedicalSummaryEntityFilterInput!]
+  periodEnd: DateOperationFilterInput
+  periodStart: DateOperationFilterInput
+  status: MedicalSummaryStatusOperationFilterInput
+  summary: StringOperationFilterInput
+  summaryType: MedicalSummaryTypeOperationFilterInput
+}
+
+enum MedicalSummaryStatus {
+  COMPLETE
+  QUEUED
+}
+
+input MedicalSummaryStatusOperationFilterInput {
+  eq: MedicalSummaryStatus
+  in: [MedicalSummaryStatus!]
+  neq: MedicalSummaryStatus
+  nin: [MedicalSummaryStatus!]
+}
+
+enum MedicalSummaryType {
+  REPORT
+}
+
+input MedicalSummaryTypeOperationFilterInput {
+  eq: MedicalSummaryType
+  in: [MedicalSummaryType!]
+  neq: MedicalSummaryType
+  nin: [MedicalSummaryType!]
+}
+
+input NtsGeometryServicesFilterInput {
+  and: [NtsGeometryServicesFilterInput!]
+  coordinateEqualityComparer: CoordinateEqualityComparerFilterInput
+  defaultCoordinateSequenceFactory: CoordinateSequenceFactoryFilterInput
+  defaultPrecisionModel: PrecisionModelFilterInput
+  defaultSRID: IntOperationFilterInput
+  geometryOverlay: GeometryOverlayFilterInput
+  or: [NtsGeometryServicesFilterInput!]
+}
+
+input NullableOfHorseMedicalRecTypeOperationFilterInput {
+  eq: HorseMedicalRecType
+  in: [HorseMedicalRecType]
+  neq: HorseMedicalRecType
+  nin: [HorseMedicalRecType]
+}
+
+input NullableOfRelocationReasonOperationFilterInput {
+  eq: RelocationReason
+  in: [RelocationReason]
+  neq: RelocationReason
+  nin: [RelocationReason]
+}
+
+input NullableOfTripTypeOperationFilterInput {
+  eq: TripType
+  in: [TripType]
+  neq: TripType
+  nin: [TripType]
+}
+
+enum OgcGeometryType {
+  CIRCULAR_STRING
+  COMPOUND_CURVE
+  CURVE
+  CURVE_POLYGON
+  GEOMETRY_COLLECTION
+  LINE_STRING
+  MULTI_CURVE
+  MULTI_LINE_STRING
+  MULTI_POINT
+  MULTI_POLYGON
+  MULTI_SURFACE
+  POINT
+  POLYGON
+  POLYHEDRAL_SURFACE
+  SURFACE
+  TIN
+}
+
+input OgcGeometryTypeOperationFilterInput {
+  eq: OgcGeometryType
+  in: [OgcGeometryType!]
+  neq: OgcGeometryType
+  nin: [OgcGeometryType!]
+}
+
+enum Ordinates {
+  ALL_MEASURE_ORDINATES
+  ALL_ORDINATES
+  ALL_SPATIAL_ORDINATES
+  MEASURE1
+  MEASURE2
+  MEASURE3
+  MEASURE4
+  MEASURE5
+  MEASURE6
+  MEASURE7
+  MEASURE8
+  MEASURE9
+  MEASURE10
+  MEASURE11
+  MEASURE12
+  MEASURE13
+  MEASURE14
+  MEASURE15
+  MEASURE16
+  NONE
+  SPATIAL1
+  SPATIAL2
+  SPATIAL3
+  SPATIAL4
+  SPATIAL5
+  SPATIAL6
+  SPATIAL7
+  SPATIAL8
+  SPATIAL9
+  SPATIAL10
+  SPATIAL11
+  SPATIAL12
+  SPATIAL13
+  SPATIAL14
+  SPATIAL15
+  SPATIAL16
+  XY
+  XYM
+  XYZ
+  XYZM
+}
+
+input OrdinatesOperationFilterInput {
+  eq: Ordinates
+  in: [Ordinates!]
+  neq: Ordinates
+  nin: [Ordinates!]
+}
+
+type PersonNameIdModel {
+  additionalLastName: String
+  displayName: String
+  firstName: String!
+  lastName: String!
+  middleName: String!
+  personId: String!
+  prefix: String
+  suffix: String
+}
+
+input PersonNameIdModelFilterInput {
+  additionalLastName: StringOperationFilterInput
+  and: [PersonNameIdModelFilterInput!]
+  displayName: StringOperationFilterInput
+  firstName: StringOperationFilterInput
+  lastName: StringOperationFilterInput
+  middleName: StringOperationFilterInput
+  or: [PersonNameIdModelFilterInput!]
+  personId: StringOperationFilterInput
+  prefix: StringOperationFilterInput
+  suffix: StringOperationFilterInput
+}
+
+input PersonNameIdModelSortInput {
+  additionalLastName: SortEnumType
+  displayName: SortEnumType
+  firstName: SortEnumType
+  lastName: SortEnumType
+  middleName: SortEnumType
+  personId: SortEnumType
+  prefix: SortEnumType
+  suffix: SortEnumType
+}
+
+"""A segment of a collection."""
+type PersonScheduleByIdCollectionSegment {
+  """A flattened list of the items."""
+  items: [PersonScheduleEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type PersonScheduleEntity {
+  createdAt: DateTime!
+  endDateTime: DateTime!
+  horseAppointments: [HorseAppointmentEntity!]!
+  locationAppointmentId: Int
+  locationSchedule: LocationAppointmentEntity!
+  personId: String!
+  personScheduleId: Int!
+  personScheduleType: PersonScheduleTypeEnum!
+  startDateTime: DateTime!
+}
+
+input PersonScheduleEntityFilterInput {
+  and: [PersonScheduleEntityFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  endDateTime: DateTimeOperationFilterInput
+  horseAppointments: ListFilterInputTypeOfHorseAppointmentEntityFilterInput
+  locationAppointmentId: IntOperationFilterInput
+  locationSchedule: LocationAppointmentEntityFilterInput
+  or: [PersonScheduleEntityFilterInput!]
+  personId: StringOperationFilterInput
+  personScheduleId: IntOperationFilterInput
+  personScheduleType: PersonScheduleTypeEnumOperationFilterInput
+  startDateTime: DateTimeOperationFilterInput
+}
+
+input PersonScheduleEntitySortInput {
+  createdAt: SortEnumType
+  endDateTime: SortEnumType
+  locationAppointmentId: SortEnumType
+  locationSchedule: LocationAppointmentEntitySortInput
+  personId: SortEnumType
+  personScheduleId: SortEnumType
+  personScheduleType: SortEnumType
+  startDateTime: SortEnumType
+}
+
+enum PersonScheduleTypeEnum {
+  BLOOD
+}
+
+input PersonScheduleTypeEnumOperationFilterInput {
+  eq: PersonScheduleTypeEnum
+  in: [PersonScheduleTypeEnum!]
+  neq: PersonScheduleTypeEnum
+  nin: [PersonScheduleTypeEnum!]
+}
+
+"""A segment of a collection."""
+type PersonSchedulesCollectionSegment {
+  """A flattened list of the items."""
+  items: [PersonScheduleEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+input PointFilterInput {
+  and: [PointFilterInput!]
+  area: FloatOperationFilterInput
+  boundary: GeometryFilterInput
+  boundaryDimension: DimensionOperationFilterInput
+  centroid: PointFilterInput
+  coordinate: CoordinateFilterInput
+  coordinateSequence: CoordinateSequenceFilterInput
+  coordinates: ListFilterInputTypeOfCoordinateFilterInput
+  dimension: DimensionOperationFilterInput
+  envelope: GeometryFilterInput
+  envelopeInternal: EnvelopeFilterInput
+  factory: GeometryFactoryFilterInput
+  geometryType: StringOperationFilterInput
+  interiorPoint: PointFilterInput
+  isEmpty: BooleanOperationFilterInput
+  isRectangle: BooleanOperationFilterInput
+  isSimple: BooleanOperationFilterInput
+  isValid: BooleanOperationFilterInput
+  length: FloatOperationFilterInput
+  m: FloatOperationFilterInput
+  numGeometries: IntOperationFilterInput
+  numPoints: IntOperationFilterInput
+  ogcGeometryType: OgcGeometryTypeOperationFilterInput
+  or: [PointFilterInput!]
+  pointOnSurface: PointFilterInput
+  precisionModel: PrecisionModelFilterInput
+  srid: IntOperationFilterInput
+  x: FloatOperationFilterInput
+  y: FloatOperationFilterInput
+  z: FloatOperationFilterInput
+}
+
+input PointSortInput {
+  x: SortEnumType
+  y: SortEnumType
+  z: SortEnumType
+}
+
+"""
+A position is an array of numbers. There MUST be two or more elements. The first two elements are longitude and latitude, or easting and northing, precisely in that order and using decimal numbers. Altitude or elevation MAY be included as an optional third element.
+"""
+scalar Position
+
+type PostLayoffReport {
+  Location: LocationResponse
+  additionalNotes: String
+  adminNotes: String
+  associatedInjuries: [PostLayoffReportInjury!]!
+  associatedMedicalRecords: [PostLayoffReportMedicalRecord!]!
+  associatedVetListRecords: [PostLayoffReportVetList!]!
+  completionDate: Date
+  createdAt: DateTime
+  expirationDate: Date
+  hisaHorseId: String!
+  hisaLocationId: String!
+  hisaOwnerId: String!
+  hisaSubmitterId: String!
+  hisaTrainerId: String!
+  hisaTreatingVetId: String
+  horseInfo: CoveredHorseExtendedResponse
+  horseName: String!
+  isDeleted: Boolean
+  isHidden: Boolean
+  lastRaceDate: Date
+  layoffReason: String!
+  locationName: String!
+  notes: String
+  otherLayoffReason: String
+  owner: PersonNameIdModel!
+  pendingSince: Date
+  postLayoffReportDisplayId: String!
+  postLayoffReportId: Int!
+  raceEntries: [PostLayoffReportRaceEntry!]!
+  racedDateAfterSubmission: Date
+  reportedTreatments: [PostLayoffReportTreatment!]!
+  status: PostLayoffReportStatus!
+  statusUpdatedBy: PersonNameIdModel
+  statusUpdatedById: String
+  submissionDate: Date
+  submitter: PersonNameIdModel!
+  trainer: PersonNameIdModel!
+  trainerEmail: String
+  trainerMobileNumber: String
+  treatingVet: PersonNameIdModel
+}
+
+"""A segment of a collection."""
+type PostLayoffReportByIdCollectionSegment {
+  """A flattened list of the items."""
+  items: [PostLayoffReport]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+input PostLayoffReportFilterInput {
+  additionalNotes: StringOperationFilterInput
+  adminNotes: StringOperationFilterInput
+  and: [PostLayoffReportFilterInput!]
+  associatedInjuries: ListFilterInputTypeOfPostLayoffReportInjuryFilterInput
+  associatedMedicalRecords: ListFilterInputTypeOfPostLayoffReportMedicalRecordFilterInput
+  associatedVetListRecords: ListFilterInputTypeOfPostLayoffReportVetListFilterInput
+  completionDate: DateOperationFilterInput
+  createdAt: DateTimeOperationFilterInput
+  expirationDate: DateOperationFilterInput
+  hisaHorseId: StringOperationFilterInput
+  hisaLocationId: StringOperationFilterInput
+  hisaOwnerId: StringOperationFilterInput
+  hisaSubmitterId: StringOperationFilterInput
+  hisaTrainerId: StringOperationFilterInput
+  hisaTreatingVetId: StringOperationFilterInput
+  horseName: StringOperationFilterInput
+  isDeleted: BooleanOperationFilterInput
+  isHidden: BooleanOperationFilterInput
+  lastRaceDate: DateOperationFilterInput
+  layoffReason: StringOperationFilterInput
+  locationName: StringOperationFilterInput
+  notes: StringOperationFilterInput
+  or: [PostLayoffReportFilterInput!]
+  otherLayoffReason: StringOperationFilterInput
+  owner: PersonNameIdModelFilterInput
+  pendingSince: DateOperationFilterInput
+  postLayoffReportDisplayId: StringOperationFilterInput
+  postLayoffReportId: IntOperationFilterInput
+  raceEntries: ListFilterInputTypeOfPostLayoffReportRaceEntryFilterInput
+  racedDateAfterSubmission: DateOperationFilterInput
+  reportedTreatments: ListFilterInputTypeOfPostLayoffReportTreatmentFilterInput
+  status: PostLayoffReportStatusOperationFilterInput
+  statusUpdatedBy: PersonNameIdModelFilterInput
+  statusUpdatedById: StringOperationFilterInput
+  submissionDate: DateOperationFilterInput
+  submitter: PersonNameIdModelFilterInput
+  trainer: PersonNameIdModelFilterInput
+  trainerEmail: StringOperationFilterInput
+  trainerMobileNumber: StringOperationFilterInput
+  treatingVet: PersonNameIdModelFilterInput
+}
+
+type PostLayoffReportInjury {
+  injuryId: String!
+  postLayoffReport: PostLayoffReport!
+  postLayoffReportId: Int!
+}
+
+input PostLayoffReportInjuryFilterInput {
+  and: [PostLayoffReportInjuryFilterInput!]
+  injuryId: StringOperationFilterInput
+  or: [PostLayoffReportInjuryFilterInput!]
+  postLayoffReport: PostLayoffReportFilterInput
+  postLayoffReportId: IntOperationFilterInput
+}
+
+type PostLayoffReportMedicalRecord {
+  medicalRecordId: String!
+  postLayoffReport: PostLayoffReport!
+  postLayoffReportId: Int!
+}
+
+input PostLayoffReportMedicalRecordFilterInput {
+  and: [PostLayoffReportMedicalRecordFilterInput!]
+  medicalRecordId: StringOperationFilterInput
+  or: [PostLayoffReportMedicalRecordFilterInput!]
+  postLayoffReport: PostLayoffReportFilterInput
+  postLayoffReportId: IntOperationFilterInput
+}
+
+type PostLayoffReportProcedure {
+  date: Date!
+  details: String!
+  hisaVetId: String
+  medicalRecordId: String
+  postLayoffReportProcedureId: Int!
+  postLayoffReportTreatment: PostLayoffReportTreatment!
+  postLayoffReportTreatmentId: Int!
+  vet: PersonNameIdModel
+}
+
+input PostLayoffReportProcedureFilterInput {
+  and: [PostLayoffReportProcedureFilterInput!]
+  date: DateOperationFilterInput
+  details: StringOperationFilterInput
+  hisaVetId: StringOperationFilterInput
+  medicalRecordId: StringOperationFilterInput
+  or: [PostLayoffReportProcedureFilterInput!]
+  postLayoffReportProcedureId: IntOperationFilterInput
+  postLayoffReportTreatment: PostLayoffReportTreatmentFilterInput
+  postLayoffReportTreatmentId: IntOperationFilterInput
+  vet: PersonNameIdModelFilterInput
+}
+
+type PostLayoffReportRaceEntry {
+  date: Date
+  hisaLocationId: String
+  kind: PostLayoffReportRaceEntryKind!
+  locationName: String
+  postLayoffReport: PostLayoffReport!
+  postLayoffReportId: Int!
+  postLayoffReportRaceEntryId: Int!
+}
+
+input PostLayoffReportRaceEntryFilterInput {
+  and: [PostLayoffReportRaceEntryFilterInput!]
+  date: DateOperationFilterInput
+  hisaLocationId: StringOperationFilterInput
+  kind: PostLayoffReportRaceEntryKindOperationFilterInput
+  locationName: StringOperationFilterInput
+  or: [PostLayoffReportRaceEntryFilterInput!]
+  postLayoffReport: PostLayoffReportFilterInput
+  postLayoffReportId: IntOperationFilterInput
+  postLayoffReportRaceEntryId: IntOperationFilterInput
+}
+
+enum PostLayoffReportRaceEntryKind {
+  LAST_RACE
+  PLANNED_RACE
+}
+
+input PostLayoffReportRaceEntryKindOperationFilterInput {
+  eq: PostLayoffReportRaceEntryKind
+  in: [PostLayoffReportRaceEntryKind!]
+  neq: PostLayoffReportRaceEntryKind
+  nin: [PostLayoffReportRaceEntryKind!]
+}
+
+input PostLayoffReportSortInput {
+  additionalNotes: SortEnumType
+  adminNotes: SortEnumType
+  completionDate: SortEnumType
+  createdAt: SortEnumType
+  expirationDate: SortEnumType
+  hisaHorseId: SortEnumType
+  hisaLocationId: SortEnumType
+  hisaOwnerId: SortEnumType
+  hisaSubmitterId: SortEnumType
+  hisaTrainerId: SortEnumType
+  hisaTreatingVetId: SortEnumType
+  horseName: SortEnumType
+  isDeleted: SortEnumType
+  isHidden: SortEnumType
+  lastRaceDate: SortEnumType
+  layoffReason: SortEnumType
+  locationName: SortEnumType
+  notes: SortEnumType
+  otherLayoffReason: SortEnumType
+  owner: PersonNameIdModelSortInput
+  pendingSince: SortEnumType
+  postLayoffReportDisplayId: SortEnumType
+  postLayoffReportId: SortEnumType
+  racedDateAfterSubmission: SortEnumType
+  status: SortEnumType
+  statusUpdatedBy: PersonNameIdModelSortInput
+  statusUpdatedById: SortEnumType
+  submissionDate: SortEnumType
+  submitter: PersonNameIdModelSortInput
+  trainer: PersonNameIdModelSortInput
+  trainerEmail: SortEnumType
+  trainerMobileNumber: SortEnumType
+  treatingVet: PersonNameIdModelSortInput
+}
+
+enum PostLayoffReportStatus {
+  COMPLETE
+  EXPIRED
+  PENDING
+  SUBMITTED
+  UNSUBMITTED
+}
+
+input PostLayoffReportStatusOperationFilterInput {
+  eq: PostLayoffReportStatus
+  in: [PostLayoffReportStatus!]
+  neq: PostLayoffReportStatus
+  nin: [PostLayoffReportStatus!]
+}
+
+type PostLayoffReportTreatment {
+  date: Date!
+  isReasonForLayoff: Boolean!
+  kind: PostLayoffTreatmentKind!
+  notes: String!
+  postLayoffReport: PostLayoffReport!
+  postLayoffReportId: Int!
+  postLayoffReportTreatmentId: Int!
+  procedures: [PostLayoffReportProcedure!]!
+  reason: String!
+}
+
+input PostLayoffReportTreatmentFilterInput {
+  and: [PostLayoffReportTreatmentFilterInput!]
+  date: DateOperationFilterInput
+  isReasonForLayoff: BooleanOperationFilterInput
+  kind: PostLayoffTreatmentKindOperationFilterInput
+  notes: StringOperationFilterInput
+  or: [PostLayoffReportTreatmentFilterInput!]
+  postLayoffReport: PostLayoffReportFilterInput
+  postLayoffReportId: IntOperationFilterInput
+  postLayoffReportTreatmentId: IntOperationFilterInput
+  procedures: ListFilterInputTypeOfPostLayoffReportProcedureFilterInput
+  reason: StringOperationFilterInput
+}
+
+type PostLayoffReportVetList {
+  postLayoffReport: PostLayoffReport!
+  postLayoffReportId: Int!
+  vetListId: String!
+}
+
+input PostLayoffReportVetListFilterInput {
+  and: [PostLayoffReportVetListFilterInput!]
+  or: [PostLayoffReportVetListFilterInput!]
+  postLayoffReport: PostLayoffReportFilterInput
+  postLayoffReportId: IntOperationFilterInput
+  vetListId: StringOperationFilterInput
+}
+
+"""A segment of a collection."""
+type PostLayoffReportsCollectionSegment {
+  """A flattened list of the items."""
+  items: [PostLayoffReport]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+enum PostLayoffTreatmentKind {
+  INTRA_ARTICULAR_INJECTION
+  MEDICATIONS
+  PROCEDURES
+  SHOCKWAVE
+  SURGERY
+  UNKNOWN
+}
+
+input PostLayoffTreatmentKindOperationFilterInput {
+  eq: PostLayoffTreatmentKind
+  in: [PostLayoffTreatmentKind!]
+  neq: PostLayoffTreatmentKind
+  nin: [PostLayoffTreatmentKind!]
+}
+
+input PrecisionModelFilterInput {
+  and: [PrecisionModelFilterInput!]
+  gridSize: FloatOperationFilterInput
+  isFloating: BooleanOperationFilterInput
+  maximumSignificantDigits: IntOperationFilterInput
+  or: [PrecisionModelFilterInput!]
+  precisionModelType: PrecisionModelsOperationFilterInput
+  scale: FloatOperationFilterInput
+}
+
+enum PrecisionModels {
+  FIXED
+  FLOATING
+  FLOATING_SINGLE
+}
+
+input PrecisionModelsOperationFilterInput {
+  eq: PrecisionModels
+  in: [PrecisionModels!]
+  neq: PrecisionModels
+  nin: [PrecisionModels!]
+}
+
+type QueryString {
+  add(other: QueryStringInput!): QueryString!
+  hasValue: Boolean!
+  toUriComponent: String!
+  value: String
+}
+
+input QueryStringInput {
+  value: String
+}
+
+type ReadyToRunRaceEntry {
+  date: Date
+  locationId: String
+  rtrReportId: Int!
+  type: ReadyToRunRaceEntryType!
+}
+
+input ReadyToRunRaceEntryFilterInput {
+  and: [ReadyToRunRaceEntryFilterInput!]
+  date: DateOperationFilterInput
+  locationId: StringOperationFilterInput
+  or: [ReadyToRunRaceEntryFilterInput!]
+  rtrReportId: IntOperationFilterInput
+  type: ReadyToRunRaceEntryTypeOperationFilterInput
+}
+
+enum ReadyToRunRaceEntryType {
+  INTENDED
+  LAST
+  UNSPECIFIED
+}
+
+input ReadyToRunRaceEntryTypeOperationFilterInput {
+  eq: ReadyToRunRaceEntryType
+  in: [ReadyToRunRaceEntryType!]
+  neq: ReadyToRunRaceEntryType
+  nin: [ReadyToRunRaceEntryType!]
+}
+
+type ReadyToRunReport {
+  Location: LocationResponse
+  approvingAttendingVetId: String
+  approvingResponsiblePersonId: String
+  attendingVetSubmissionNotes: String
+  author: PersonNameIdModel!
+  authorId: String!
+  awaitingReplySince: Date
+  barnNumber: String
+  completedOn: Date
+  createdAt: DateTime!
+  dateSetOn: Date
+  discussions: [ReadyToRunReportDiscussion!]!
+  expiredOn: Date
+  failedOn: Date
+  horseId: String!
+  horseInfo: CoveredHorseExtendedResponse
+  horseName: String!
+  isHorseShippedIn: Boolean!
+  layoffReason: String!
+  locationId: String!
+  locationName: String
+  medicalSummaries: [RtrReportMedicalSummary!]!
+  otherLayoffReason: String
+  owner: PersonNameIdModel!
+  ownerId: String!
+  raceEntries: [ReadyToRunRaceEntry!]!
+  rejectedOn: Date
+  responsiblePerson: PersonNameIdModel!
+  responsiblePersonId: String!
+  reviewingVet: PersonNameIdModel
+  reviewingVetId: String
+  rpSubmissionNotes: String
+  rtrReportDisplayId: String!
+  rtrReportId: Int!
+  schedulingSince: Date
+  status: RtrReportStatus!
+  statusReasons: [ReadyToRunStatusReason!]!
+  statusSetBy: String
+  submittedOn: Date
+  treatingVet: PersonNameIdModel
+  treatingVetId: String
+  type: RtrReportType!
+  underReviewSince: Date
+  workOffResult: ReadyToRunWorkOffResult
+}
+
+type ReadyToRunReportDiscussion {
+  discussion: DiscussionEntity!
+  discussionId: Int!
+  rtrReportDiscussionId: Int!
+  rtrReportId: Int!
+}
+
+input ReadyToRunReportDiscussionFilterInput {
+  and: [ReadyToRunReportDiscussionFilterInput!]
+  discussion: DiscussionEntityFilterInput
+  discussionId: IntOperationFilterInput
+  or: [ReadyToRunReportDiscussionFilterInput!]
+  rtrReportDiscussionId: IntOperationFilterInput
+  rtrReportId: IntOperationFilterInput
+}
+
+input ReadyToRunReportFilterInput {
+  and: [ReadyToRunReportFilterInput!]
+  approvingAttendingVetId: StringOperationFilterInput
+  approvingResponsiblePersonId: StringOperationFilterInput
+  attendingVetSubmissionNotes: StringOperationFilterInput
+  author: PersonNameIdModelFilterInput
+  authorId: StringOperationFilterInput
+  awaitingReplySince: DateOperationFilterInput
+  barnNumber: StringOperationFilterInput
+  completedOn: DateOperationFilterInput
+  createdAt: DateTimeOperationFilterInput
+  dateSetOn: DateOperationFilterInput
+  discussions: ListFilterInputTypeOfReadyToRunReportDiscussionFilterInput
+  expiredOn: DateOperationFilterInput
+  failedOn: DateOperationFilterInput
+  horseId: StringOperationFilterInput
+  horseName: StringOperationFilterInput
+  isHorseShippedIn: BooleanOperationFilterInput
+  layoffReason: StringOperationFilterInput
+  locationId: StringOperationFilterInput
+  locationName: StringOperationFilterInput
+  medicalSummaries: ListFilterInputTypeOfRtrReportMedicalSummaryFilterInput
+  or: [ReadyToRunReportFilterInput!]
+  otherLayoffReason: StringOperationFilterInput
+  owner: PersonNameIdModelFilterInput
+  ownerId: StringOperationFilterInput
+  raceEntries: ListFilterInputTypeOfReadyToRunRaceEntryFilterInput
+  rejectedOn: DateOperationFilterInput
+  responsiblePerson: PersonNameIdModelFilterInput
+  responsiblePersonId: StringOperationFilterInput
+  reviewingVet: PersonNameIdModelFilterInput
+  reviewingVetId: StringOperationFilterInput
+  rpSubmissionNotes: StringOperationFilterInput
+  rtrReportDisplayId: StringOperationFilterInput
+  rtrReportId: IntOperationFilterInput
+  schedulingSince: DateOperationFilterInput
+  status: RtrReportStatusOperationFilterInput
+  statusReasons: ListFilterInputTypeOfReadyToRunStatusReasonFilterInput
+  statusSetBy: StringOperationFilterInput
+  submittedOn: DateOperationFilterInput
+  treatingVet: PersonNameIdModelFilterInput
+  treatingVetId: StringOperationFilterInput
+  type: RtrReportTypeOperationFilterInput
+  underReviewSince: DateOperationFilterInput
+  workOffResult: ReadyToRunWorkOffResultFilterInput
+}
+
+input ReadyToRunReportSortInput {
+  approvingAttendingVetId: SortEnumType
+  approvingResponsiblePersonId: SortEnumType
+  attendingVetSubmissionNotes: SortEnumType
+  author: PersonNameIdModelSortInput
+  authorId: SortEnumType
+  awaitingReplySince: SortEnumType
+  barnNumber: SortEnumType
+  completedOn: SortEnumType
+  createdAt: SortEnumType
+  dateSetOn: SortEnumType
+  expiredOn: SortEnumType
+  failedOn: SortEnumType
+  horseId: SortEnumType
+  horseName: SortEnumType
+  isHorseShippedIn: SortEnumType
+  layoffReason: SortEnumType
+  locationId: SortEnumType
+  locationName: SortEnumType
+  otherLayoffReason: SortEnumType
+  owner: PersonNameIdModelSortInput
+  ownerId: SortEnumType
+  rejectedOn: SortEnumType
+  responsiblePerson: PersonNameIdModelSortInput
+  responsiblePersonId: SortEnumType
+  reviewingVet: PersonNameIdModelSortInput
+  reviewingVetId: SortEnumType
+  rpSubmissionNotes: SortEnumType
+  rtrReportDisplayId: SortEnumType
+  rtrReportId: SortEnumType
+  schedulingSince: SortEnumType
+  status: SortEnumType
+  statusSetBy: SortEnumType
+  submittedOn: SortEnumType
+  treatingVet: PersonNameIdModelSortInput
+  treatingVetId: SortEnumType
+  type: SortEnumType
+  underReviewSince: SortEnumType
+  workOffResult: ReadyToRunWorkOffResultSortInput
+}
+
+type ReadyToRunStatusReason {
+  addedAt: DateTime
+  addedBy: String
+  reason: String!
+  rtrReportId: Int!
+  status: RtrReportStatus!
+}
+
+input ReadyToRunStatusReasonFilterInput {
+  addedAt: DateTimeOperationFilterInput
+  addedBy: StringOperationFilterInput
+  and: [ReadyToRunStatusReasonFilterInput!]
+  or: [ReadyToRunStatusReasonFilterInput!]
+  reason: StringOperationFilterInput
+  rtrReportId: IntOperationFilterInput
+  status: RtrReportStatusOperationFilterInput
+}
+
+type ReadyToRunWorkOffReason {
+  reason: String!
+  rtrReportId: Int!
+  rtrWorkOffReasonId: Int!
+  rtrWorkOffResultId: Int!
+}
+
+input ReadyToRunWorkOffReasonFilterInput {
+  and: [ReadyToRunWorkOffReasonFilterInput!]
+  or: [ReadyToRunWorkOffReasonFilterInput!]
+  reason: StringOperationFilterInput
+  rtrReportId: IntOperationFilterInput
+  rtrWorkOffReasonId: IntOperationFilterInput
+  rtrWorkOffResultId: IntOperationFilterInput
+}
+
+type ReadyToRunWorkOffResult {
+  date: Date!
+  observationNotes: String!
+  passed: Boolean!
+  reasons: [ReadyToRunWorkOffReason!]!
+  regVetComments: String!
+  rtrReportId: Int!
+  rtrWorkOffResultId: Int!
+}
+
+input ReadyToRunWorkOffResultFilterInput {
+  and: [ReadyToRunWorkOffResultFilterInput!]
+  date: DateOperationFilterInput
+  observationNotes: StringOperationFilterInput
+  or: [ReadyToRunWorkOffResultFilterInput!]
+  passed: BooleanOperationFilterInput
+  reasons: ListFilterInputTypeOfReadyToRunWorkOffReasonFilterInput
+  regVetComments: StringOperationFilterInput
+  rtrReportId: IntOperationFilterInput
+  rtrWorkOffResultId: IntOperationFilterInput
+}
+
+input ReadyToRunWorkOffResultSortInput {
+  date: SortEnumType
+  observationNotes: SortEnumType
+  passed: SortEnumType
+  regVetComments: SortEnumType
+  rtrReportId: SortEnumType
+  rtrWorkOffResultId: SortEnumType
+}
+
+type RecordActivity {
+  created: RecordActivityDetail
+  deleted: RecordActivityDetail
+  lastAccess: RecordActivityDetail
+  lastUpdate: RecordActivityDetail
+}
+
+type RecordActivityDetail {
+  appKey: String
+  date: DateTime!
+  spanId: String
+  traceId: String
+  uuid: String
+}
+
+input RecordActivityDetailFilterInput {
+  and: [RecordActivityDetailFilterInput!]
+  appKey: StringOperationFilterInput
+  date: DateTimeOperationFilterInput
+  or: [RecordActivityDetailFilterInput!]
+  spanId: StringOperationFilterInput
+  traceId: StringOperationFilterInput
+  uuid: StringOperationFilterInput
+}
+
+input RecordActivityDetailSortInput {
+  appKey: SortEnumType
+  date: SortEnumType
+  spanId: SortEnumType
+  traceId: SortEnumType
+  uuid: SortEnumType
+}
+
+input RecordActivityFilterInput {
+  and: [RecordActivityFilterInput!]
+  created: RecordActivityDetailFilterInput
+  deleted: RecordActivityDetailFilterInput
+  lastAccess: RecordActivityDetailFilterInput
+  lastUpdate: RecordActivityDetailFilterInput
+  or: [RecordActivityFilterInput!]
+}
+
+input RecordActivitySortInput {
+  created: RecordActivityDetailSortInput
+  deleted: RecordActivityDetailSortInput
+  lastAccess: RecordActivityDetailSortInput
+  lastUpdate: RecordActivityDetailSortInput
+}
+
+enum RelocationReason {
+  OTHER
+  RACE
+  STABLE
+  TREATMENT
+  WORK
+}
+
+"""Represents root query."""
+type RootQuery {
+  """Get horse appointment by id."""
+  horseAppointmentById(id: Int!, order: [HorseAppointmentEntitySortInput!], skip: Int, take: Int, where: HorseAppointmentEntityFilterInput): HorseAppointmentByIdCollectionSegment
+
+  """Gets the queryable horse appointments."""
+  horseAppointments(order: [HorseAppointmentEntitySortInput!], skip: Int, take: Int, where: HorseAppointmentEntityFilterInput): HorseAppointmentsCollectionSegment
+
+  """Get horse appointment by LocationId and date range."""
+  horseAppointmentsByLocationDateRange(endDate: DateTime!, locationId: String, order: [HorseAppointmentEntitySortInput!], skip: Int, startDate: DateTime!, take: Int, where: HorseAppointmentEntityFilterInput): HorseAppointmentsByLocationDateRangeCollectionSegment
+
+  """Gets the queryable horse location report."""
+  horseLocationReport(order: [HorseLocationReportSortInput!], skip: Int, take: Int, where: HorseLocationReportFilterInput): HorseLocationReportCollectionSegment
+
+  """Get horse location report by id."""
+  horseLocationReportById(id: Long!, order: [HorseLocationReportSortInput!], skip: Int, take: Int, where: HorseLocationReportFilterInput): HorseLocationReportByIdCollectionSegment
+
+  """Gets the queryable horse location report."""
+  horseTreatment(order: [HorseTreatmentSortInput!], skip: Int, take: Int, where: HorseTreatmentFilterInput): HorseTreatmentCollectionSegment
+
+  """Get horse location report by id."""
+  horseTreatmentById(id: Long!, order: [HorseTreatmentSortInput!], skip: Int, take: Int, where: HorseTreatmentFilterInput): HorseTreatmentByIdCollectionSegment
+
+  """Gets the queryable LocationAppointment."""
+  locationAppointment(order: [LocationAppointmentEntitySortInput!], skip: Int, take: Int, where: LocationAppointmentEntityFilterInput): LocationAppointmentCollectionSegment
+
+  """Get LocationAppointment by id."""
+  locationAppointmentById(id: Int!, order: [LocationAppointmentEntitySortInput!], skip: Int, take: Int, where: LocationAppointmentEntityFilterInput): LocationAppointmentByIdCollectionSegment
+
+  """Get location by id."""
+  locationById(id: String, order: [BasicLocationEntitySortInput!], skip: Int, take: Int, where: BasicLocationEntityFilterInput): LocationByIdCollectionSegment
+
+  """Gets the queryable locations."""
+  locations(order: [BasicLocationEntitySortInput!], skip: Int, take: Int, where: BasicLocationEntityFilterInput): LocationsCollectionSegment
+
+  """Get PersonSchedule by id."""
+  personScheduleById(id: Int!, order: [PersonScheduleEntitySortInput!], skip: Int, take: Int, where: PersonScheduleEntityFilterInput): PersonScheduleByIdCollectionSegment
+
+  """Gets the queryable PersonSchedule."""
+  personSchedules(order: [PersonScheduleEntitySortInput!], skip: Int, take: Int, where: PersonScheduleEntityFilterInput): PersonSchedulesCollectionSegment
+
+  """Get PostLayoff by display id."""
+  postLayoffReportById(id: String, order: [PostLayoffReportSortInput!], skip: Int, take: Int, where: PostLayoffReportFilterInput): PostLayoffReportByIdCollectionSegment
+
+  """Gets the queryable post layoff reports."""
+  postLayoffReports(order: [PostLayoffReportSortInput!], skip: Int, take: Int, where: PostLayoffReportFilterInput): PostLayoffReportsCollectionSegment
+
+  """Get RTR report by display id."""
+  rtrReportById(id: String, order: [ReadyToRunReportSortInput!], skip: Int, take: Int, where: ReadyToRunReportFilterInput): RtrReportByIdCollectionSegment
+
+  """Gets the queryable post layoff reports."""
+  rtrReports(order: [ReadyToRunReportSortInput!], skip: Int, take: Int, where: ReadyToRunReportFilterInput): RtrReportsCollectionSegment
+
+  """Gets the queryable RunnersData."""
+  runnersData(filter: RunnersDataQueryParamsInput!, order: [RunnersDataSortInput!], skip: Int, take: Int, where: RunnersDataFilterInput): RunnersDataCollectionSegment
+
+  """Gets the queryable RunnersData by id."""
+  runnersDataById(id: String, timestamp: String): RunnersData
+
+  """Gets the queryable RunnersResult."""
+  runnersResult(filter: RunnersResultQueryParamsInput!, order: [RunnersResultDataSortInput!], skip: Int, take: Int, where: RunnersResultDataFilterInput): RunnersResultCollectionSegment
+
+  """Gets the queryable RunnersResult by id."""
+  runnersResultById(id: String, timestamp: String): RunnersResultData
+
+  """Get Scarches by display id."""
+  scratchById(id: String): Scratch
+
+  """Gets the queryable scarches."""
+  scratches(order: [ScratchSortInput!], skip: Int, take: Int, where: ScratchFilterInput): ScratchesCollectionSegment
+
+  """Search RTR reports by text."""
+  searchRtrReports(order: [ReadyToRunReportSortInput!], searchTerm: String, skip: Int, take: Int, where: ReadyToRunReportFilterInput): SearchRtrReportsCollectionSegment
+
+  """Search transportation events."""
+  searchTransportationEvents(id: Long, order: [TransportationEventEntitySortInput!], skip: Int, take: Int, where: TransportationEventEntityFilterInput): SearchTransportationEventsCollectionSegment
+
+  """Gets the queryable TransactionLog by entity id."""
+  transactionLogById(entityId: String, timestamp: String): TransactionLog
+
+  """Gets the queryable TransactionLog."""
+  transactionLogs(filter: TransactionLogQueryParamsInput!, order: [TransactionLogSortInput!], skip: Int, take: Int, where: TransactionLogFilterInput): TransactionLogsCollectionSegment
+
+  """Gets a transportation event address by its ID."""
+  transportationEventAddressById(id: Long!, order: [TransportationEventAddressEntitySortInput!], skip: Int, take: Int, where: TransportationEventAddressEntityFilterInput): TransportationEventAddressByIdCollectionSegment
+
+  """Gets the queryable transportation event addresses."""
+  transportationEventAddresses(order: [TransportationEventAddressEntitySortInput!], skip: Int, take: Int, where: TransportationEventAddressEntityFilterInput): TransportationEventAddressesCollectionSegment
+
+  """
+  Gets a paginated, sortable, and filterable list of transportation event details matching the specified ID.
+  """
+  transportationEventDetailById(id: Long!, order: [TransportationEventDetailEntitySortInput!], skip: Int, take: Int, where: TransportationEventDetailEntityFilterInput): TransportationEventDetailByIdCollectionSegment
+
+  """
+  Gets a paginated, sortable, and filterable list of transportation event details.
+  """
+  transportationEventDetails(order: [TransportationEventDetailEntitySortInput!], skip: Int, take: Int, where: TransportationEventDetailEntityFilterInput): TransportationEventDetailsCollectionSegment
+
+  """Gets the queryable transportation events."""
+  transportationEvents(order: [TransportationEventEntitySortInput!], skip: Int, take: Int, where: TransportationEventEntityFilterInput): TransportationEventsCollectionSegment
+
+  """Gets treatment protocol by id."""
+  treatmentProtocolById(id: String): TreatmentProtocol
+
+  """Gets the queryable treatment protocols."""
+  treatmentProtocols(order: [TreatmentProtocolSortInput!], skip: Int, take: Int, where: TreatmentProtocolFilterInput): TreatmentProtocolsCollectionSegment
+  treatmentTemplateById(id: String): TreatmentTemplate
+  treatmentTemplates: [TreatmentTemplate]
+}
+
+"""A segment of a collection."""
+type RtrReportByIdCollectionSegment {
+  """A flattened list of the items."""
+  items: [ReadyToRunReport]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type RtrReportMedicalSummary {
+  medicalSummary: MedicalSummaryEntity!
+  medicalSummaryId: Int!
+  report: ReadyToRunReport!
+  rtrReportId: Int!
+}
+
+input RtrReportMedicalSummaryFilterInput {
+  and: [RtrReportMedicalSummaryFilterInput!]
+  medicalSummary: MedicalSummaryEntityFilterInput
+  medicalSummaryId: IntOperationFilterInput
+  or: [RtrReportMedicalSummaryFilterInput!]
+  report: ReadyToRunReportFilterInput
+  rtrReportId: IntOperationFilterInput
+}
+
+enum RtrReportStatus {
+  AWAITING_REPLY
+  COMPLETED
+  DATE_SET
+  DRAFT
+  EXPIRED
+  FAILED
+  REJECTED
+  SCHEDULING
+  SUBMITTED
+  UNDER_REVIEW
+}
+
+input RtrReportStatusOperationFilterInput {
+  eq: RtrReportStatus
+  in: [RtrReportStatus!]
+  neq: RtrReportStatus
+  nin: [RtrReportStatus!]
+}
+
+enum RtrReportType {
+  MANDATORY_ATTENDING_VET_INSPECTION
+  POST_LAYOFF
+  UNSPECIFIED
+  WORK_OFF_VET_LIST
+}
+
+input RtrReportTypeOperationFilterInput {
+  eq: RtrReportType
+  in: [RtrReportType!]
+  neq: RtrReportType
+  nin: [RtrReportType!]
+}
+
+"""A segment of a collection."""
+type RtrReportsCollectionSegment {
+  """A flattened list of the items."""
+  items: [ReadyToRunReport]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type RunnersData {
+  id: String!
+  locked: String
+  preferredCurrentAsOfIncremental: String
+  preferredRecType: String
+  raceBreedTb: String
+  raceCountry: String
+  raceDate: String
+  raceDistanceFurlong: String
+  raceNumber: String
+  raceOnTheFlat: String
+  raceSurface: String
+  raceSurfaceCondition: String
+  raceTrackId: String
+  raceType: String
+  runnerDNF: Boolean!
+  runnerDeath: String
+  runnerDnf: String
+  runnerHisaId: String
+  runnerHorseBreed: String
+  runnerIncludeInMetricsReport: String
+  runnerRaceDeath: String
+  runnerScratched: String
+  runnerScratched2: String
+  runnerStart: String
+  runnerTjcNumber: String
+  timestampRunnerNumber: String!
+}
+
+"""A segment of a collection."""
+type RunnersDataCollectionSegment {
+  """A flattened list of the items."""
+  items: [RunnersData]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+input RunnersDataFilterInput {
+  and: [RunnersDataFilterInput!]
+  id: StringOperationFilterInput
+  locked: StringOperationFilterInput
+  or: [RunnersDataFilterInput!]
+  preferredCurrentAsOfIncremental: StringOperationFilterInput
+  preferredRecType: StringOperationFilterInput
+  raceBreedTb: StringOperationFilterInput
+  raceCountry: StringOperationFilterInput
+  raceDate: StringOperationFilterInput
+  raceDistanceFurlong: StringOperationFilterInput
+  raceNumber: StringOperationFilterInput
+  raceOnTheFlat: StringOperationFilterInput
+  raceSurface: StringOperationFilterInput
+  raceSurfaceCondition: StringOperationFilterInput
+  raceTrackId: StringOperationFilterInput
+  raceType: StringOperationFilterInput
+  runnerDNF: BooleanOperationFilterInput
+  runnerDeath: StringOperationFilterInput
+  runnerDnf: StringOperationFilterInput
+  runnerHisaId: StringOperationFilterInput
+  runnerHorseBreed: StringOperationFilterInput
+  runnerIncludeInMetricsReport: StringOperationFilterInput
+  runnerRaceDeath: StringOperationFilterInput
+  runnerScratched: StringOperationFilterInput
+  runnerScratched2: StringOperationFilterInput
+  runnerStart: StringOperationFilterInput
+  runnerTjcNumber: StringOperationFilterInput
+  timestampRunnerNumber: StringOperationFilterInput
+}
+
+input RunnersDataQueryParamsInput {
+  raceCountry: String
+  raceDate: String
+  raceDistanceFurlong: String
+  raceNumber: String
+  raceSurface: String
+  raceSurfaceCondition: String
+  raceTrackId: String
+  raceType: String
+  runnerHisaId: String
+  runnerHorseBreed: String
+  runnerScratched2: String
+  runnerTjcNumber: String
+}
+
+input RunnersDataSortInput {
+  id: SortEnumType
+  locked: SortEnumType
+  preferredCurrentAsOfIncremental: SortEnumType
+  preferredRecType: SortEnumType
+  raceBreedTb: SortEnumType
+  raceCountry: SortEnumType
+  raceDate: SortEnumType
+  raceDistanceFurlong: SortEnumType
+  raceNumber: SortEnumType
+  raceOnTheFlat: SortEnumType
+  raceSurface: SortEnumType
+  raceSurfaceCondition: SortEnumType
+  raceTrackId: SortEnumType
+  raceType: SortEnumType
+  runnerDNF: SortEnumType
+  runnerDeath: SortEnumType
+  runnerDnf: SortEnumType
+  runnerHisaId: SortEnumType
+  runnerHorseBreed: SortEnumType
+  runnerIncludeInMetricsReport: SortEnumType
+  runnerRaceDeath: SortEnumType
+  runnerScratched: SortEnumType
+  runnerScratched2: SortEnumType
+  runnerStart: SortEnumType
+  runnerTjcNumber: SortEnumType
+  timestampRunnerNumber: SortEnumType
+}
+
+"""A segment of a collection."""
+type RunnersResultCollectionSegment {
+  """A flattened list of the items."""
+  items: [RunnersResultData]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type RunnersResultData {
+  currentAsOf: String
+  currentAsOfIncremental: Long!
+  hisaCriteriaRace: Boolean!
+  id: String
+  locationId: String
+  raceClaimingPrice: Int!
+  raceCondition: String
+  raceCountry: String
+  raceCourse: String
+  raceDate: String
+  raceDescription: String
+  raceDistance: String
+  raceDistanceFurlong: String
+  raceDistanceFurlongRound: Float!
+  raceFootnote: String
+  raceOffTime: String
+  racePostTime: String
+  racePurse: Int!
+  raceRaceNumber: Int!
+  raceTrackId: String
+  raceTrackName: String
+  raceType: String
+  starterClaimIndicator: String
+  starterClaimedPriceUsa: String
+  starterClaimingPriceWaived: String
+  starterDnf: Boolean!
+  starterEarnings: Int!
+  starterHisaRegulated: Boolean!
+  starterHorseBreedType: String
+  starterHorseColor: String
+  starterHorseDamName: String
+  starterHorseFoaled: String
+  starterHorseHisaId: String
+  starterHorseMicrochips: String
+  starterHorseName: String
+  starterHorseReferenceNumber: Int!
+  starterHorseRegistry: String
+  starterHorseSex: String
+  starterHorseSireName: String
+  starterHorseTattoo: String
+  starterJockeyFirstName: String
+  starterJockeyHisaId: String
+  starterJockeyLastName: String
+  starterJockeyReferenceNumber: Int!
+  starterJockeyType: String
+  starterLengthBehindAtFinish: Float!
+  starterOdds: Float!
+  starterOfficialPosition: Int!
+  starterOwnerFirstName: String
+  starterOwnerHisaId: String
+  starterOwnerLastName: String
+  starterOwnerReferenceNumber: Int!
+  starterOwnerType: String
+  starterPositionAtPointOfCall1: Int!
+  starterPositionAtPointOfCall2: Int!
+  starterPositionAtPointOfCall3: Int!
+  starterPositionAtPointOfCall4: Int!
+  starterPositionAtPointOfCall5: Int!
+  starterPostPosition: Int!
+  starterProgramNumber: String
+  starterRecordType: String
+  starterScratched: Boolean!
+  starterShakes: Int!
+  starterTrainerFirstName: String
+  starterTrainerHisaId: String
+  starterTrainerLastName: String
+  starterTrainerReferenceNumber: Int!
+  starterTrainerType: String
+  starterVoidIndicator: String
+  starterVoidReason: String
+  timestamp: String
+}
+
+input RunnersResultDataFilterInput {
+  and: [RunnersResultDataFilterInput!]
+  currentAsOf: StringOperationFilterInput
+  currentAsOfIncremental: LongOperationFilterInput
+  hisaCriteriaRace: BooleanOperationFilterInput
+  id: StringOperationFilterInput
+  locationId: StringOperationFilterInput
+  or: [RunnersResultDataFilterInput!]
+  raceClaimingPrice: IntOperationFilterInput
+  raceCondition: StringOperationFilterInput
+  raceCountry: StringOperationFilterInput
+  raceCourse: StringOperationFilterInput
+  raceDate: StringOperationFilterInput
+  raceDescription: StringOperationFilterInput
+  raceDistance: StringOperationFilterInput
+  raceDistanceFurlong: StringOperationFilterInput
+  raceDistanceFurlongRound: FloatOperationFilterInput
+  raceFootnote: StringOperationFilterInput
+  raceOffTime: StringOperationFilterInput
+  racePostTime: StringOperationFilterInput
+  racePurse: IntOperationFilterInput
+  raceRaceNumber: IntOperationFilterInput
+  raceTrackId: StringOperationFilterInput
+  raceTrackName: StringOperationFilterInput
+  raceType: StringOperationFilterInput
+  starterClaimIndicator: StringOperationFilterInput
+  starterClaimedPriceUsa: StringOperationFilterInput
+  starterClaimingPriceWaived: StringOperationFilterInput
+  starterDnf: BooleanOperationFilterInput
+  starterEarnings: IntOperationFilterInput
+  starterHisaRegulated: BooleanOperationFilterInput
+  starterHorseBreedType: StringOperationFilterInput
+  starterHorseColor: StringOperationFilterInput
+  starterHorseDamName: StringOperationFilterInput
+  starterHorseFoaled: StringOperationFilterInput
+  starterHorseHisaId: StringOperationFilterInput
+  starterHorseMicrochips: StringOperationFilterInput
+  starterHorseName: StringOperationFilterInput
+  starterHorseReferenceNumber: IntOperationFilterInput
+  starterHorseRegistry: StringOperationFilterInput
+  starterHorseSex: StringOperationFilterInput
+  starterHorseSireName: StringOperationFilterInput
+  starterHorseTattoo: StringOperationFilterInput
+  starterJockeyFirstName: StringOperationFilterInput
+  starterJockeyHisaId: StringOperationFilterInput
+  starterJockeyLastName: StringOperationFilterInput
+  starterJockeyReferenceNumber: IntOperationFilterInput
+  starterJockeyType: StringOperationFilterInput
+  starterLengthBehindAtFinish: FloatOperationFilterInput
+  starterOdds: FloatOperationFilterInput
+  starterOfficialPosition: IntOperationFilterInput
+  starterOwnerFirstName: StringOperationFilterInput
+  starterOwnerHisaId: StringOperationFilterInput
+  starterOwnerLastName: StringOperationFilterInput
+  starterOwnerReferenceNumber: IntOperationFilterInput
+  starterOwnerType: StringOperationFilterInput
+  starterPositionAtPointOfCall1: IntOperationFilterInput
+  starterPositionAtPointOfCall2: IntOperationFilterInput
+  starterPositionAtPointOfCall3: IntOperationFilterInput
+  starterPositionAtPointOfCall4: IntOperationFilterInput
+  starterPositionAtPointOfCall5: IntOperationFilterInput
+  starterPostPosition: IntOperationFilterInput
+  starterProgramNumber: StringOperationFilterInput
+  starterRecordType: StringOperationFilterInput
+  starterScratched: BooleanOperationFilterInput
+  starterShakes: IntOperationFilterInput
+  starterTrainerFirstName: StringOperationFilterInput
+  starterTrainerHisaId: StringOperationFilterInput
+  starterTrainerLastName: StringOperationFilterInput
+  starterTrainerReferenceNumber: IntOperationFilterInput
+  starterTrainerType: StringOperationFilterInput
+  starterVoidIndicator: StringOperationFilterInput
+  starterVoidReason: StringOperationFilterInput
+  timestamp: StringOperationFilterInput
+}
+
+input RunnersResultDataSortInput {
+  currentAsOf: SortEnumType
+  currentAsOfIncremental: SortEnumType
+  hisaCriteriaRace: SortEnumType
+  id: SortEnumType
+  locationId: SortEnumType
+  raceClaimingPrice: SortEnumType
+  raceCondition: SortEnumType
+  raceCountry: SortEnumType
+  raceCourse: SortEnumType
+  raceDate: SortEnumType
+  raceDescription: SortEnumType
+  raceDistance: SortEnumType
+  raceDistanceFurlong: SortEnumType
+  raceDistanceFurlongRound: SortEnumType
+  raceFootnote: SortEnumType
+  raceOffTime: SortEnumType
+  racePostTime: SortEnumType
+  racePurse: SortEnumType
+  raceRaceNumber: SortEnumType
+  raceTrackId: SortEnumType
+  raceTrackName: SortEnumType
+  raceType: SortEnumType
+  starterClaimIndicator: SortEnumType
+  starterClaimedPriceUsa: SortEnumType
+  starterClaimingPriceWaived: SortEnumType
+  starterDnf: SortEnumType
+  starterEarnings: SortEnumType
+  starterHisaRegulated: SortEnumType
+  starterHorseBreedType: SortEnumType
+  starterHorseColor: SortEnumType
+  starterHorseDamName: SortEnumType
+  starterHorseFoaled: SortEnumType
+  starterHorseHisaId: SortEnumType
+  starterHorseMicrochips: SortEnumType
+  starterHorseName: SortEnumType
+  starterHorseReferenceNumber: SortEnumType
+  starterHorseRegistry: SortEnumType
+  starterHorseSex: SortEnumType
+  starterHorseSireName: SortEnumType
+  starterHorseTattoo: SortEnumType
+  starterJockeyFirstName: SortEnumType
+  starterJockeyHisaId: SortEnumType
+  starterJockeyLastName: SortEnumType
+  starterJockeyReferenceNumber: SortEnumType
+  starterJockeyType: SortEnumType
+  starterLengthBehindAtFinish: SortEnumType
+  starterOdds: SortEnumType
+  starterOfficialPosition: SortEnumType
+  starterOwnerFirstName: SortEnumType
+  starterOwnerHisaId: SortEnumType
+  starterOwnerLastName: SortEnumType
+  starterOwnerReferenceNumber: SortEnumType
+  starterOwnerType: SortEnumType
+  starterPositionAtPointOfCall1: SortEnumType
+  starterPositionAtPointOfCall2: SortEnumType
+  starterPositionAtPointOfCall3: SortEnumType
+  starterPositionAtPointOfCall4: SortEnumType
+  starterPositionAtPointOfCall5: SortEnumType
+  starterPostPosition: SortEnumType
+  starterProgramNumber: SortEnumType
+  starterRecordType: SortEnumType
+  starterScratched: SortEnumType
+  starterShakes: SortEnumType
+  starterTrainerFirstName: SortEnumType
+  starterTrainerHisaId: SortEnumType
+  starterTrainerLastName: SortEnumType
+  starterTrainerReferenceNumber: SortEnumType
+  starterTrainerType: SortEnumType
+  starterVoidIndicator: SortEnumType
+  starterVoidReason: SortEnumType
+  timestamp: SortEnumType
+}
+
+input RunnersResultQueryParamsInput {
+  dateRange: DateRangeInput
+  starterHorseHisaId: String
+  starterHorseName: String
+  starterJockeyHisaId: String
+  starterOwnerHisaId: String
+  starterTrainerHisaId: String
+}
+
+type Scratch {
+  Location: LocationResponse
+  actualPostPosition: Int!
+  calledInBy: CalledInType!
+  calledInByDescription: String
+  cancelReason: String
+  cancelledAt: DateTime
+  cancelledByHisaId: String
+  cancelledByHisaPerson: PersonNameIdModel
+  createdByHisaId: String
+  createdDateTime: DateTime
+  date: Date!
+  hisaJockeyId: String!
+  hisaStewardId: String!
+  horseId: String!
+  horseInfo: CoveredHorseExtendedResponse
+  horseName: String!
+  isDeleted: Boolean
+  jockey: PersonNameIdModel!
+  lastUpdatedDateTime: DateTime
+  locationId: String!
+  locationName: String!
+  nameOfCaller: String
+  notes: String
+  postPosition: Int!
+  postedAt: DateTime
+  programNumber: String!
+  raceNumber: Int!
+  raceTime: DateTime!
+  reasonCode: String!
+  responsiblePerson: PersonNameIdModel!
+  responsiblePersonId: String!
+  scratchDisplayId: String!
+  scratchId: Int!
+  status: ScratchStatus!
+  steward: PersonNameIdModel!
+  time: TimeSpan!
+  type: ScratchType!
+  updatedByHisaId: String
+}
+
+input ScratchFilterInput {
+  and: [ScratchFilterInput!]
+  calledInBy: CalledInTypeOperationFilterInput
+  calledInByDescription: StringOperationFilterInput
+  cancelReason: StringOperationFilterInput
+  cancelledAt: DateTimeOperationFilterInput
+  cancelledByHisaId: StringOperationFilterInput
+  cancelledByHisaPerson: PersonNameIdModelFilterInput
+  createdByHisaId: StringOperationFilterInput
+  createdDateTime: DateTimeOperationFilterInput
+  date: DateOperationFilterInput
+  hisaJockeyId: StringOperationFilterInput
+  hisaStewardId: StringOperationFilterInput
+  horseId: StringOperationFilterInput
+  horseName: StringOperationFilterInput
+  isDeleted: BooleanOperationFilterInput
+  jockey: PersonNameIdModelFilterInput
+  lastUpdatedDateTime: DateTimeOperationFilterInput
+  locationId: StringOperationFilterInput
+  locationName: StringOperationFilterInput
+  nameOfCaller: StringOperationFilterInput
+  notes: StringOperationFilterInput
+  or: [ScratchFilterInput!]
+  postPosition: IntOperationFilterInput
+  postedAt: DateTimeOperationFilterInput
+  programNumber: StringOperationFilterInput
+  raceNumber: IntOperationFilterInput
+  raceTime: DateTimeOperationFilterInput
+  reasonCode: StringOperationFilterInput
+  responsiblePerson: PersonNameIdModelFilterInput
+  responsiblePersonId: StringOperationFilterInput
+  scratchDisplayId: StringOperationFilterInput
+  scratchId: IntOperationFilterInput
+  status: ScratchStatusOperationFilterInput
+  steward: PersonNameIdModelFilterInput
+  time: TimeSpanOperationFilterInput
+  type: ScratchTypeOperationFilterInput
+  updatedByHisaId: StringOperationFilterInput
+}
+
+input ScratchSortInput {
+  calledInBy: SortEnumType
+  calledInByDescription: SortEnumType
+  cancelReason: SortEnumType
+  cancelledAt: SortEnumType
+  cancelledByHisaId: SortEnumType
+  cancelledByHisaPerson: PersonNameIdModelSortInput
+  createdByHisaId: SortEnumType
+  createdDateTime: SortEnumType
+  date: SortEnumType
+  hisaJockeyId: SortEnumType
+  hisaStewardId: SortEnumType
+  horseId: SortEnumType
+  horseName: SortEnumType
+  isDeleted: SortEnumType
+  jockey: PersonNameIdModelSortInput
+  lastUpdatedDateTime: SortEnumType
+  locationId: SortEnumType
+  locationName: SortEnumType
+  nameOfCaller: SortEnumType
+  notes: SortEnumType
+  postPosition: SortEnumType
+  postedAt: SortEnumType
+  programNumber: SortEnumType
+  raceNumber: SortEnumType
+  raceTime: SortEnumType
+  reasonCode: SortEnumType
+  responsiblePerson: PersonNameIdModelSortInput
+  responsiblePersonId: SortEnumType
+  scratchDisplayId: SortEnumType
+  scratchId: SortEnumType
+  status: SortEnumType
+  steward: PersonNameIdModelSortInput
+  time: SortEnumType
+  type: SortEnumType
+  updatedByHisaId: SortEnumType
+}
+
+enum ScratchStatus {
+  CANCELLED
+  NOT_POSTED
+  POSTED
+}
+
+input ScratchStatusOperationFilterInput {
+  eq: ScratchStatus
+  in: [ScratchStatus!]
+  neq: ScratchStatus
+  nin: [ScratchStatus!]
+}
+
+enum ScratchType {
+  EARLY
+  LATE
+}
+
+input ScratchTypeOperationFilterInput {
+  eq: ScratchType
+  in: [ScratchType!]
+  neq: ScratchType
+  nin: [ScratchType!]
+}
+
+"""A segment of a collection."""
+type ScratchesCollectionSegment {
+  """A flattened list of the items."""
+  items: [Scratch]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+"""A segment of a collection."""
+type SearchRtrReportsCollectionSegment {
+  """A flattened list of the items."""
+  items: [ReadyToRunReport]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+"""A segment of a collection."""
+type SearchTransportationEventsCollectionSegment {
+  """A flattened list of the items."""
+  items: [TransportationEventEntity!]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  contains: String
+  endsWith: String
+  eq: String
+  in: [String]
+  ncontains: String
+  nendsWith: String
+  neq: String
+  nin: [String]
+  nstartsWith: String
+  or: [StringOperationFilterInput!]
+  startsWith: String
+}
+
+"""The `TimeSpan` scalar represents an ISO-8601 compliant duration type."""
+scalar TimeSpan
+
+input TimeSpanOperationFilterInput {
+  eq: TimeSpan
+  gt: TimeSpan
+  gte: TimeSpan
+  in: [TimeSpan]
+  lt: TimeSpan
+  lte: TimeSpan
+  neq: TimeSpan
+  ngt: TimeSpan
+  ngte: TimeSpan
+  nin: [TimeSpan]
+  nlt: TimeSpan
+  nlte: TimeSpan
+}
+
+type TransactionLog {
+  action: String!
+  activity: RecordActivity!
+  complete: Boolean!
+  date: Date!
+  details: String
+  entityId: String!
+  messageId: String
+  status: TransactionLogStatus!
+  timestamp: String!
+  transactionId: String!
+  treatmentRecordId: String
+}
+
+input TransactionLogFilterInput {
+  action: StringOperationFilterInput
+  activity: RecordActivityFilterInput
+  and: [TransactionLogFilterInput!]
+  complete: BooleanOperationFilterInput
+  date: DateOperationFilterInput
+  details: StringOperationFilterInput
+  entityId: StringOperationFilterInput
+  messageId: StringOperationFilterInput
+  or: [TransactionLogFilterInput!]
+  status: TransactionLogStatusOperationFilterInput
+  timestamp: StringOperationFilterInput
+  transactionId: StringOperationFilterInput
+  treatmentRecordId: StringOperationFilterInput
+  uniqueId: StringOperationFilterInput
+  uuid: StringOperationFilterInput
+}
+
+input TransactionLogQueryParamsInput {
+  dateRange: DateRangeInput
+  entityId: String
+  status: TransactionLogStatus
+  treatmentRecordId: String
+}
+
+input TransactionLogSortInput {
+  action: SortEnumType
+  activity: RecordActivitySortInput
+  complete: SortEnumType
+  date: SortEnumType
+  details: SortEnumType
+  entityId: SortEnumType
+  messageId: SortEnumType
+  status: SortEnumType
+  timestamp: SortEnumType
+  transactionId: SortEnumType
+  treatmentRecordId: SortEnumType
+  uniqueId: SortEnumType
+  uuid: SortEnumType
+}
+
+enum TransactionLogStatus {
+  CONFIRMED_CHANGES_MADE
+  CONFIRMED_NO_CHANGES_MADE
+  MESSAGE_READ
+  MESSAGE_RECALLED
+  MESSAGE_RECIEVED
+  MESSAGE_SENT
+  NOT_CONFIRMED_SKIPPED_BY_HUMAN
+  NOT_CONFIRMED_TIMED_OUT
+  NO_RESPONSE_TIMED_OUT
+  RECORD_MODIFIED
+  RESUBMITTED_FOR_PROCESSING
+  WAITING_FOR_HUMAN
+  WAITING_FOR_INFORMATION
+  WAITING_FOR_RESPONSE
+}
+
+input TransactionLogStatusOperationFilterInput {
+  eq: TransactionLogStatus
+  in: [TransactionLogStatus!]
+  neq: TransactionLogStatus
+  nin: [TransactionLogStatus!]
+}
+
+"""A segment of a collection."""
+type TransactionLogsCollectionSegment {
+  """A flattened list of the items."""
+  items: [TransactionLog]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+enum TransportationAddressRole {
+  CURRENT
+  DESTINATION
+  ORIGIN
+}
+
+input TransportationAddressRoleOperationFilterInput {
+  eq: TransportationAddressRole
+  in: [TransportationAddressRole!]
+  neq: TransportationAddressRole
+  nin: [TransportationAddressRole!]
+}
+
+"""A segment of a collection."""
+type TransportationEventAddressByIdCollectionSegment {
+  """A flattened list of the items."""
+  items: [TransportationEventAddressEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type TransportationEventAddressEntity {
+  city: String!
+  country: String!
+  createdAt: DateTime!
+  event: TransportationEventEntity!
+  eventId: Long!
+  role: TransportationAddressRole!
+  state: String!
+  street: String!
+  transportationEventAddressId: Long!
+  unitAptBoxNumber: String
+  zipPostalCode: String
+}
+
+input TransportationEventAddressEntityFilterInput {
+  and: [TransportationEventAddressEntityFilterInput!]
+  city: StringOperationFilterInput
+  country: StringOperationFilterInput
+  createdAt: DateTimeOperationFilterInput
+  event: TransportationEventEntityFilterInput
+  eventId: LongOperationFilterInput
+  or: [TransportationEventAddressEntityFilterInput!]
+  role: TransportationAddressRoleOperationFilterInput
+  state: StringOperationFilterInput
+  street: StringOperationFilterInput
+  transportationEventAddressId: LongOperationFilterInput
+  unitAptBoxNumber: StringOperationFilterInput
+  zipPostalCode: StringOperationFilterInput
+}
+
+input TransportationEventAddressEntitySortInput {
+  city: SortEnumType
+  country: SortEnumType
+  createdAt: SortEnumType
+  event: TransportationEventEntitySortInput
+  eventId: SortEnumType
+  role: SortEnumType
+  state: SortEnumType
+  street: SortEnumType
+  transportationEventAddressId: SortEnumType
+  unitAptBoxNumber: SortEnumType
+  zipPostalCode: SortEnumType
+}
+
+"""A segment of a collection."""
+type TransportationEventAddressesCollectionSegment {
+  """A flattened list of the items."""
+  items: [TransportationEventAddressEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+"""A segment of a collection."""
+type TransportationEventDetailByIdCollectionSegment {
+  """A flattened list of the items."""
+  items: [TransportationEventDetailEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type TransportationEventDetailEntity {
+  contactPersonPhone: String
+  createdAt: DateTime!
+  currentGeoLocation: GeoJSONPointType
+  currentLocationId: String
+  destinationGeoLocation: GeoJSONPointType
+  destinationLocationId: String
+  driverName: String
+  event: TransportationEventEntity!
+  eventId: Long!
+  hisaDriverId: String
+  hisaPersonId: String
+  incidentDescription: String
+  licPicId: String
+  licensePlate: String
+  microchipVerificationData: String
+  notes: String
+  originGeoLocation: GeoJSONPointType
+  originLocationId: String
+  otherReasonDescription: String
+  relocationReason: RelocationReason
+  transportCompanyName: String
+  transportationEventDetailId: Long!
+  tripType: TripType
+}
+
+input TransportationEventDetailEntityFilterInput {
+  and: [TransportationEventDetailEntityFilterInput!]
+  contactPersonPhone: StringOperationFilterInput
+  createdAt: DateTimeOperationFilterInput
+  currentGeoLocation: PointFilterInput
+  currentLocationId: StringOperationFilterInput
+  destinationGeoLocation: PointFilterInput
+  destinationLocationId: StringOperationFilterInput
+  driverName: StringOperationFilterInput
+  event: TransportationEventEntityFilterInput
+  eventId: LongOperationFilterInput
+  hisaDriverId: StringOperationFilterInput
+  hisaPersonId: StringOperationFilterInput
+  incidentDescription: StringOperationFilterInput
+  licPicId: StringOperationFilterInput
+  licensePlate: StringOperationFilterInput
+  microchipVerificationData: StringOperationFilterInput
+  notes: StringOperationFilterInput
+  or: [TransportationEventDetailEntityFilterInput!]
+  originGeoLocation: PointFilterInput
+  originLocationId: StringOperationFilterInput
+  otherReasonDescription: StringOperationFilterInput
+  relocationReason: NullableOfRelocationReasonOperationFilterInput
+  transportCompanyName: StringOperationFilterInput
+  transportationEventDetailId: LongOperationFilterInput
+  tripType: NullableOfTripTypeOperationFilterInput
+}
+
+input TransportationEventDetailEntitySortInput {
+  contactPersonPhone: SortEnumType
+  createdAt: SortEnumType
+  currentGeoLocation: PointSortInput
+  currentLocationId: SortEnumType
+  destinationGeoLocation: PointSortInput
+  destinationLocationId: SortEnumType
+  driverName: SortEnumType
+  event: TransportationEventEntitySortInput
+  eventId: SortEnumType
+  hisaDriverId: SortEnumType
+  hisaPersonId: SortEnumType
+  incidentDescription: SortEnumType
+  licPicId: SortEnumType
+  licensePlate: SortEnumType
+  microchipVerificationData: SortEnumType
+  notes: SortEnumType
+  originGeoLocation: PointSortInput
+  originLocationId: SortEnumType
+  otherReasonDescription: SortEnumType
+  relocationReason: SortEnumType
+  transportCompanyName: SortEnumType
+  transportationEventDetailId: SortEnumType
+  tripType: SortEnumType
+}
+
+"""A segment of a collection."""
+type TransportationEventDetailsCollectionSegment {
+  """A flattened list of the items."""
+  items: [TransportationEventDetailEntity]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type TransportationEventEntity {
+  addresses: [TransportationEventAddressEntity!]
+  createdAt: DateTime!
+  createdBy: String!
+  details: TransportationEventDetailEntity
+  eventId: Long!
+  eventType: TransportationEventType!
+  horses: [TransportationEventHorseEntity!]!
+  sourceId: String!
+  sourceKind: String!
+  status: TransportationStatus!
+  timestamp: DateTime!
+}
+
+input TransportationEventEntityFilterInput {
+  addresses: ListFilterInputTypeOfTransportationEventAddressEntityFilterInput
+  and: [TransportationEventEntityFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  createdBy: StringOperationFilterInput
+  details: TransportationEventDetailEntityFilterInput
+  eventId: LongOperationFilterInput
+  eventType: TransportationEventTypeOperationFilterInput
+  horses: ListFilterInputTypeOfTransportationEventHorseEntityFilterInput
+  or: [TransportationEventEntityFilterInput!]
+  sourceId: StringOperationFilterInput
+  sourceKind: StringOperationFilterInput
+  status: TransportationStatusOperationFilterInput
+  timestamp: DateTimeOperationFilterInput
+}
+
+input TransportationEventEntitySortInput {
+  createdAt: SortEnumType
+  createdBy: SortEnumType
+  details: TransportationEventDetailEntitySortInput
+  eventId: SortEnumType
+  eventType: SortEnumType
+  sourceId: SortEnumType
+  sourceKind: SortEnumType
+  status: SortEnumType
+  timestamp: SortEnumType
+}
+
+type TransportationEventHorseEntity {
+  createdAt: DateTime!
+  event: TransportationEventEntity!
+  eventId: Long!
+  hisaHorseId: String!
+  horse: BasicHorse
+  transportationEventHorseId: Long!
+}
+
+input TransportationEventHorseEntityFilterInput {
+  and: [TransportationEventHorseEntityFilterInput!]
+  createdAt: DateTimeOperationFilterInput
+  event: TransportationEventEntityFilterInput
+  eventId: LongOperationFilterInput
+  hisaHorseId: StringOperationFilterInput
+  horse: BasicHorseFilterInput
+  or: [TransportationEventHorseEntityFilterInput!]
+  transportationEventHorseId: LongOperationFilterInput
+}
+
+enum TransportationEventType {
+  ARRIVAL
+  DRIVE
+  PICKUP
+}
+
+input TransportationEventTypeOperationFilterInput {
+  eq: TransportationEventType
+  in: [TransportationEventType!]
+  neq: TransportationEventType
+  nin: [TransportationEventType!]
+}
+
+"""A segment of a collection."""
+type TransportationEventsCollectionSegment {
+  """A flattened list of the items."""
+  items: [TransportationEventEntity!]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+enum TransportationStatus {
+  CLOSED
+  FINISHED
+  IN_PROGRESS
+  NEW
+}
+
+input TransportationStatusOperationFilterInput {
+  eq: TransportationStatus
+  in: [TransportationStatus!]
+  neq: TransportationStatus
+  nin: [TransportationStatus!]
+}
+
+type TreatmentProtocol {
+  createdDateTime: DateTime
+  externalTreatmentProtocolId: String!
+  isDeleted: Boolean
+  isPublic: Boolean!
+  lastUpdatedDateTime: DateTime
+  personId: String!
+  protocolName: String
+  treatments: [TreatmentTemplate!]!
+}
+
+input TreatmentProtocolFilterInput {
+  and: [TreatmentProtocolFilterInput!]
+  createdDateTime: DateTimeOperationFilterInput
+  externalTreatmentProtocolId: StringOperationFilterInput
+  isDeleted: BooleanOperationFilterInput
+  isPublic: BooleanOperationFilterInput
+  lastUpdatedDateTime: DateTimeOperationFilterInput
+  or: [TreatmentProtocolFilterInput!]
+  personId: StringOperationFilterInput
+  protocolName: StringOperationFilterInput
+  treatmentProtocolId: IntOperationFilterInput
+  treatments: ListFilterInputTypeOfTreatmentTemplateFilterInput
+}
+
+input TreatmentProtocolSortInput {
+  createdDateTime: SortEnumType
+  externalTreatmentProtocolId: SortEnumType
+  isDeleted: SortEnumType
+  isPublic: SortEnumType
+  lastUpdatedDateTime: SortEnumType
+  personId: SortEnumType
+  protocolName: SortEnumType
+  treatmentProtocolId: SortEnumType
+}
+
+"""A segment of a collection."""
+type TreatmentProtocolsCollectionSegment {
+  """A flattened list of the items."""
+  items: [TreatmentProtocol]
+
+  """Information to aid in pagination."""
+  pageInfo: CollectionSegmentInfo!
+  totalCount: Int!
+}
+
+type TreatmentRecordPeople {
+  attendingVets: [String!]!
+  designatedOwner: String!
+  drugDispensedTo: String!
+  drugPrescribingVet: String!
+  regulatoryVet: String!
+  reportingPerson: String!
+  requestingVet: String!
+  responsiblePerson: String!
+  specialist: String!
+  surgeon: String!
+  treatingPerson: String!
+}
+
+input TreatmentRecordPeopleFilterInput {
+  and: [TreatmentRecordPeopleFilterInput!]
+  attendingVets: ListStringOperationFilterInput
+  designatedOwner: StringOperationFilterInput
+  drugDispensedTo: StringOperationFilterInput
+  drugPrescribingVet: StringOperationFilterInput
+  or: [TreatmentRecordPeopleFilterInput!]
+  regulatoryVet: StringOperationFilterInput
+  reportingPerson: StringOperationFilterInput
+  requestingVet: StringOperationFilterInput
+  responsiblePerson: StringOperationFilterInput
+  specialist: StringOperationFilterInput
+  surgeon: StringOperationFilterInput
+  treatingPerson: StringOperationFilterInput
+}
+
+input TreatmentRecordPeopleSortInput {
+  designatedOwner: SortEnumType
+  drugDispensedTo: SortEnumType
+  drugPrescribingVet: SortEnumType
+  regulatoryVet: SortEnumType
+  reportingPerson: SortEnumType
+  requestingVet: SortEnumType
+  responsiblePerson: SortEnumType
+  specialist: SortEnumType
+  surgeon: SortEnumType
+  treatingPerson: SortEnumType
+}
+
+type TreatmentTemplate {
+  category: String
+  chiropractic: String
+  classifiedAs: String
+  clearedToRace: Boolean!
+  clearedToWork: Boolean!
+  conditionTreated: String
+  dental: String
+  description: String
+  drugDosage: String
+  drugName: String
+  drugRoute: HorseMedicalRouteAdmin!
+  externalTreatmentProtocolId: String!
+  externalTreatmentTemplateId: String!
+  internalNotes: String
+  isDeleted: Boolean
+  limbTreated: String
+  modality: String
+  notes: String
+  physiotherapy: String
+  procedure: String
+  recType: HorseMedicalRecType
+  structure: String
+  surgery: String
+  testName: String
+  testResults: String
+  treatmentProtocol: TreatmentProtocol!
+  vaccine: String
+}
+
+input TreatmentTemplateFilterInput {
+  and: [TreatmentTemplateFilterInput!]
+  category: StringOperationFilterInput
+  chiropractic: StringOperationFilterInput
+  classifiedAs: StringOperationFilterInput
+  clearedToRace: BooleanOperationFilterInput
+  clearedToWork: BooleanOperationFilterInput
+  conditionTreated: StringOperationFilterInput
+  dental: StringOperationFilterInput
+  description: StringOperationFilterInput
+  drugDosage: StringOperationFilterInput
+  drugName: StringOperationFilterInput
+  drugRoute: HorseMedicalRouteAdminOperationFilterInput
+  externalTreatmentProtocolId: StringOperationFilterInput
+  externalTreatmentTemplateId: StringOperationFilterInput
+  internalNotes: StringOperationFilterInput
+  isDeleted: BooleanOperationFilterInput
+  limbTreated: StringOperationFilterInput
+  modality: StringOperationFilterInput
+  notes: StringOperationFilterInput
+  or: [TreatmentTemplateFilterInput!]
+  physiotherapy: StringOperationFilterInput
+  procedure: StringOperationFilterInput
+  recType: NullableOfHorseMedicalRecTypeOperationFilterInput
+  structure: StringOperationFilterInput
+  surgery: StringOperationFilterInput
+  testName: StringOperationFilterInput
+  testResults: StringOperationFilterInput
+  treatmentProtocol: TreatmentProtocolFilterInput
+  treatmentProtocolId: IntOperationFilterInput
+  treatmentTemplateId: IntOperationFilterInput
+  vaccine: StringOperationFilterInput
+}
+
+enum TripType {
+  ONE_WAY
+  ROUND_TRIP
+}
+
+enum VetsListReason {
+  ADMIN
+  CLENBUTEROL_OR_VENTIPULMIN
+  EPISTAXIS
+  EXHAUSTED_HEAT_STROKE
+  ILLNESS
+  INJURED
+  INTRA_ARTICULAR_INJECTION
+  INTRA_ARTICULAR_INJECTION_FETLOCK_JOINT
+  INTRA_ARTICULAR_INJECTION_WITH_PAAG
+  LAST_START_GT365
+  MEDICALLY_COMPROMISED
+  NO_STARTS_BEFORE4_YEAR_OLD
+  OTHER
+  PHYSICALLY_DISTRESSED
+  POSITIVE_TEST_OR_OVERAGE
+  SHOCKWAVE
+  UNKNOWN
+  UNSOUNDNESS
+}
