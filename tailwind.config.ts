@@ -84,6 +84,7 @@ export default {
         algae: "#819c85",
         cream: '#faf9f4',
         darkCream: '#f0eee1',
+        blueLink: "#0060d0",
         mint: "#cdddcd",
         san: "#cfc9c1",
         beige: "#eeeada",
