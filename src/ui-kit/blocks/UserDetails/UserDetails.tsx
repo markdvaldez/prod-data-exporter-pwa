@@ -3,7 +3,7 @@ import { useUserPermissions } from "@/hooks/useAuthUser";
 import {
   getFormattedId,
   getUserInitials,
-} from "@/runnersQcApp/pages/MainPage/helpers";
+} from "@/prodDataExporter/pages/MainPage/helpers";
 import {
   Card,
   CardContent,

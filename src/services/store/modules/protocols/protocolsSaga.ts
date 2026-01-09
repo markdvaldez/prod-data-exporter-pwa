@@ -1,4 +1,4 @@
-import { getUniqId } from "@/runnersQcApp/shared/UniqId";
+import { getUniqId } from "@/prodDataExporter/shared/UniqId";
 import { addTreatmentQuery } from "@/services/api/modules/protocols/addTreatmentQuery";
 import { createProtocolQuery } from "@/services/api/modules/protocols/createProtocolQuery";
 import { deleteProtocolQuery } from "@/services/api/modules/protocols/deleteProtocolQuery";

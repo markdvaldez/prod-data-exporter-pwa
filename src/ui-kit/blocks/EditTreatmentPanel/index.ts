@@ -1,1 +1,0 @@
-export { EditTreatmentPanel } from "./EditTreatmentPanel";

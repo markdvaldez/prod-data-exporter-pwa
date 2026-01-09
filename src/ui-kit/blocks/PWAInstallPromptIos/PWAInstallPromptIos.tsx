@@ -1,3 +1,11 @@
+"use client";
+
+import React, { useCallback, useMemo, useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Compass, Share, SquarePlus } from "lucide-react";
+import { useTranslations } from "next-intl";
+
 import { getConfig } from "@/services/appConfig";
 import { Button } from "@/ui-kit/components/Button";
 import { CloseButton } from "@/ui-kit/components/CloseButton";
@@ -8,12 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/ui-kit/components/ui/card";
-import { motion } from "framer-motion";
-import { map } from "lodash";
-import { Compass, Share, SquarePlus } from "lucide-react";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
-import { useCallback, useMemo, useState } from "react";
+
 import { TableListItem } from "../../components/TableListItem";
 import { PWAInstallPromptProps } from "../PWAInstallPrompt/PWAInstallPrompt";
 import {
@@ -23,31 +26,19 @@ import {
 } from "./AccordionParts";
 import { ButtonIcon } from "./ButtonIcon";
 
-export const PWAInstallPromptIos: React.FC<PWAInstallPromptProps> = ({
+export const PWAInstallPromptIos = ({
   isSmallScreen,
   onCancel,
   onClose,
-}) => {
+}: PWAInstallPromptProps) => {
   const t = useTranslations("Pwa");
   const [isOpen, setIsOpen] = useState(false);
 
   const options = useMemo(
     () => [
-      {
-        title: t("openInYourMainBrowser"),
-        iconSrc: Compass,
-        iconColor: "#007AFF",
-      },
-      {
-        title: t("pressShare"),
-        iconSrc: Share,
-        iconColor: "#007AFF",
-      },
-      {
-        title: t("scrollDown"),
-        iconSrc: SquarePlus,
-        iconColor: "#FFFFFF",
-      },
+      { title: t("openInYourMainBrowser"), iconSrc: Compass, iconColor: "#007AFF" },
+      { title: t("pressShare"), iconSrc: Share, iconColor: "#007AFF" },
+      { title: t("scrollDown"), iconSrc: SquarePlus, iconColor: "#FFFFFF" },
     ],
     [t]
   );
@@ -56,22 +47,17 @@ export const PWAInstallPromptIos: React.FC<PWAInstallPromptProps> = ({
     () => ({
       initial: { opacity: 0, y: isSmallScreen ? 200 : -200 },
       animate: { opacity: 1, y: 0 },
-      transition: { duration: 0.5, ease: "easeInOut" },
+      transition: { duration: 0.5, ease: "easeInOut" as const },
     }),
     [isSmallScreen]
   );
 
   const { name, logoWhiteSrc } = useMemo(() => {
     const { logoWhite, name } = getConfig();
-    return {
-      name,
-      logoWhiteSrc: logoWhite,
-    };
+    return { name, logoWhiteSrc: logoWhite };
   }, []);
 
-  const toggle = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
+  const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
   return (
     <motion.div
@@ -81,13 +67,7 @@ export const PWAInstallPromptIos: React.FC<PWAInstallPromptProps> = ({
       <Card className="w-full sm:w-[364px] bg-tDefault rounded-xl shadow-xl drop-shadow-xl">
         <CardHeader className="space-y-1.5 p-4 relative">
           <div className="flex flex-1 items-start">
-            <Image
-              priority
-              alt="Logo"
-              src={logoWhiteSrc}
-              width={56}
-              height={56}
-            />
+            <Image priority alt="Logo" src={logoWhiteSrc} width={56} height={56} />
             <div className="flex flex-col pl-3">
               <CardTitle className="text-w0 text-md">
                 {t("installApp", { name })}
@@ -97,21 +77,19 @@ export const PWAInstallPromptIos: React.FC<PWAInstallPromptProps> = ({
               </CardDescription>
             </div>
           </div>
+
           <CloseButton
             className="absolute top-0 right-2"
             variant="light"
             onClick={onClose}
           />
         </CardHeader>
+
         <CardContent className="p-4 pt-0">
-          <AccordionMain
-            type="single"
-            collapsible={true}
-            value={isOpen ? "item-1" : undefined}
-          >
+          <AccordionMain type="single" collapsible value={isOpen ? "item-1" : undefined}>
             <AccordionItem value="item-1">
               <AccordionContent>
-                {map(options, (item) => (
+                {options.map((item) => (
                   <TableListItem
                     key={`table-list-item-${item.title}`}
                     title={item.title}
@@ -122,6 +100,7 @@ export const PWAInstallPromptIos: React.FC<PWAInstallPromptProps> = ({
               </AccordionContent>
             </AccordionItem>
           </AccordionMain>
+
           <div className="flex gap-4">
             <Button
               className="flex-0"
@@ -129,6 +108,7 @@ export const PWAInstallPromptIos: React.FC<PWAInstallPromptProps> = ({
               title={t("notNow")}
               onClick={onCancel}
             />
+
             <ButtonIcon className="flex-1 px-4" onClick={toggle}>
               {isOpen ? t("hideInstruction") : t("addToHomeScreen")}
               <SquarePlus size={24} />

@@ -1,5 +1,5 @@
 "use client";
-import { BottomContainer } from "@/runnersQcApp/containers/BottomContainer";
+import { BottomContainer } from "@/prodDataExporter/containers/BottomContainer";
 import { useAppAccessMutation } from "@/services/api/modules/auth/fetchAppAccess";
 import { getConfig } from "@/services/appConfig";
 import { handleSignOut } from "@/services/aws/amplifyActions";

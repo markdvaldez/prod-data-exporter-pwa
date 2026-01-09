@@ -1,1 +1,0 @@
-export { SearchPersonContainer } from "./SearchPersonContainer";

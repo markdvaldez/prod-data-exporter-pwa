@@ -1,4 +1,3 @@
-import { TLocation } from "@/services/store/modules/locations/types";
 import {
   HorseDeathReason,
   HorseLocationModel,
@@ -125,7 +124,6 @@ export type TFormFields = {
   clearedToWork?: boolean;
   clearedToRace?: boolean;
   inspectionType?: string;
-  treatmentLocation?: TLocation;
   testResults?: string;
 };
 

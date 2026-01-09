@@ -43,13 +43,7 @@ import {
   restartAuth,
   setError,
 } from ".";
-import { resetHorsemedical, syncHorseMedical } from "../horseMedical";
-import { getPersonHorses, resetHorses } from "../horses";
-import { resetLocations, resetTracks, updateFavorites } from "../locations";
-import { selectFavoriteLocations } from "../locations/selectors";
-import { TLocation } from "../locations/types";
 import { logErrorAction, logEventAction } from "../logger";
-import { forceUpload } from "../offlineQueue";
 import { getAllProtocolsAction, resetProtocols } from "../protocols";
 import { TAuthSagaActions } from "./sagaActions";
 import { selectHisaPersonId } from "./selectors";
@@ -103,13 +97,6 @@ export function* handleSuccessfulSignIn() {
   yield call(setUserId, userId);
 
   const hisaPersonId: string = yield select(selectHisaPersonId);
-  const favorites: TLocation[] | [] = yield select(selectFavoriteLocations);
-
-  if (userId === hisaPersonId) {
-    yield put(updateFavorites({ favorites }));
-  } else {
-    yield put(resetTracks());
-  }
 
   yield put(changeHisaPersonId({ hisaPersonId: userId }));
 
@@ -122,8 +109,6 @@ export function* handleSuccessfulSignIn() {
     return;
   }
   yield put(getPersonRequest({ personId: userId }));
-  yield put(syncHorseMedical());
-  yield put(getPersonHorses({ personId: userId }));
   yield put(getAllProtocolsAction());
 
   if (hasPermissions) {
@@ -310,18 +295,9 @@ export function* checkAuth() {
     yield call(setUserId, userId);
 
     const hisaPersonId: string = yield select(selectHisaPersonId);
-    const favorites: TLocation[] | [] = yield select(selectFavoriteLocations);
-
-    if (userId === hisaPersonId) {
-      yield put(updateFavorites({ favorites }));
-    } else {
-      yield put(resetTracks());
-    }
 
     yield put(changeHisaPersonId({ hisaPersonId: userId }));
     yield put(getPersonRequest({ personId: userId }));
-    yield put(syncHorseMedical());
-    yield put(getPersonHorses({ personId: userId }));
     yield put(getAllProtocolsAction());
   } catch (e) {
     yield put(logErrorAction(extractError(e)));
@@ -334,27 +310,19 @@ export function* restartAuthSaga() {
   yield put(changeNextStep({ nextStep: NextStep.SIGN_IN }));
   yield call(signOutGlobal);
   yield call(navigateToLogin);
-  yield put(resetHorses());
-  yield put(resetLocations());
 }
 
 export function* syncDataSaga() {
   const personId: string = yield select(selectHisaPersonId);
-  yield put(syncHorseMedical());
-  yield put(getPersonHorses({ personId }));
-  yield put(forceUpload());
 }
 
 export function* logoutSaga() {
   try {
     yield call(clearAllCookies);
     yield call(clearPwaInstallation);
-    yield put(resetHorsemedical());
     yield put(resetProtocols());
     yield call(signOutGlobal);
     yield call(ednSession);
-    yield put(resetHorses());
-    yield put(resetLocations());
   } catch (e) { }
 }
 

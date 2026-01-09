@@ -1,3 +1,10 @@
+"use client";
+
+import React, { useMemo } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+
 import { getConfig } from "@/services/appConfig";
 import { Button } from "@/ui-kit/components/Button";
 import { CloseButton } from "@/ui-kit/components/CloseButton";
@@ -8,10 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/ui-kit/components/ui/card";
-import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
-import { useMemo } from "react";
 
 export type PWAInstallPromptProps = {
   isSmallScreen?: boolean;
@@ -20,28 +23,26 @@ export type PWAInstallPromptProps = {
   onClose: () => void;
 };
 
-export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
+export const PWAInstallPrompt = ({
   isSmallScreen,
   onConfirm,
   onCancel,
   onClose,
-}) => {
+}: PWAInstallPromptProps) => {
   const t = useTranslations("Pwa");
+
   const animationProps = useMemo(
     () => ({
       initial: { opacity: 0, y: 200 },
       animate: { opacity: 1, y: 0 },
-      transition: { duration: 0.5, ease: "easeInOut" },
+      transition: { duration: 0.5, ease: "easeInOut" as const },
     }),
     []
   );
 
   const { name, logoWhiteSrc } = useMemo(() => {
     const { logoWhite, name } = getConfig();
-    return {
-      name,
-      logoWhiteSrc: logoWhite,
-    };
+    return { name, logoWhiteSrc: logoWhite };
   }, []);
 
   return (
@@ -68,12 +69,14 @@ export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
               </CardDescription>
             </div>
           </div>
+
           <CloseButton
             className="absolute top-0 right-2"
             variant="light"
             onClick={onClose}
           />
         </CardHeader>
+
         <CardContent className="p-4 pt-0">
           <div className="flex gap-4">
             <Button
@@ -82,11 +85,7 @@ export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
               title={t("notNow")}
               onClick={onCancel}
             />
-            <Button
-              className="flex-1"
-              title={t("install")}
-              onClick={onConfirm}
-            />
+            <Button className="flex-1" title={t("install")} onClick={onConfirm} />
           </div>
         </CardContent>
       </Card>

@@ -1,1 +1,0 @@
-export { AddTreatmentPanel } from "./AddTreatmentPanel";

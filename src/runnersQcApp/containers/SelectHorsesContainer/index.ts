@@ -1,1 +1,0 @@
-export { SelectHorsesContainer } from './SelectHorsesContainer';

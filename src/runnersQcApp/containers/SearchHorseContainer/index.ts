@@ -1,1 +1,0 @@
-export { SearchHorseContainer } from './SearchHorseContainer';

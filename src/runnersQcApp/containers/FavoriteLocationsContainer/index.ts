@@ -1,1 +1,0 @@
-export { FavoriteLocationsWrapper } from "./FavoriteLocationsWrapper";

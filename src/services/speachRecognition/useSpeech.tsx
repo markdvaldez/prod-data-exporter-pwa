@@ -1,5 +1,5 @@
-import { getNow } from "@/runnersQcApp/shared/DateUtils";
-import { getUniqId } from "@/runnersQcApp/shared/UniqId";
+import { getNow } from "@/prodDataExporter/shared/DateUtils";
+import { getUniqId } from "@/prodDataExporter/shared/UniqId";
 import { printIdToken as getToken } from "@/services/aws/amplifyActions";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 import {

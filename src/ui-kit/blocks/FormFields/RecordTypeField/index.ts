@@ -1,1 +1,0 @@
-export { RecordTypeField } from "./RecordTypeField";

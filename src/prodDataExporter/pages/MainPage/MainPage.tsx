@@ -1,5 +1,4 @@
 import { usePrefetch } from "@/services/pwa/usePrefetch";
-import { forceUpload } from "@/services/store/modules/offlineQueue";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -12,7 +11,6 @@ export const MainPage = () => {
   usePrefetch();
 
   useEffect(() => {
-    dispatch(forceUpload());
   }, [dispatch]);
 
   return (

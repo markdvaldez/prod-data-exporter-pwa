@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserInitials } from "@/runnersQcApp/pages/MainPage/helpers";
+import { getUserInitials } from "@/prodDataExporter/pages/MainPage/helpers";
 import routes from "@/routes";
 import { handleSignOut } from "@/services/aws/amplifyActions";
 import { restartAuth } from "@/services/store/modules/auth";
@@ -106,7 +106,7 @@ export const NavUser: React.FC<NavUserProps> = ({ user, children }) => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link href={routes.SETTINGS} onClick={handleInfoClick}>
+              <Link href={routes.PROD_DATA_EXPORTER} onClick={handleInfoClick}>
                 <DropdownMenuItem>
                   <BadgeCheck />
                   {t("myInformation")}

@@ -1,1 +1,0 @@
-export { HorseField } from "./HorseField";

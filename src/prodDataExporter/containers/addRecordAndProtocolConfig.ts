@@ -4,7 +4,6 @@ import {
   TreatmentTemplateModel,
   TreatmentTemplateRequest,
 } from "@/Types/global-types";
-import { TSelectValue } from "@/ui-kit/blocks/FormFields/AccordionField/AccordionField";
 import _ from "lodash";
 import { DateTime } from "luxon";
 import { z } from "zod/v4";
@@ -179,35 +178,11 @@ export const getLabel = (type: string | null | undefined): string => {
   return splitCamelCase(type) || "";
 };
 
-export const getModalityTypesOptions = (): TSelectValue[] => {
-  const mappedModalityTypes = _.map(MODALITY_TYPES, (type) => ({
-    label: getLabel(type),
-    value: type,
-  }));
-  return _.sortBy(mappedModalityTypes, (o) => o.value.toUpperCase());
-};
-
 export const getLimbTreatedTypesOptions = (): TOption[] => {
   return _.map(LIMB_TREATED_OPTIONS, (type) => ({
     label: getLabel(type),
     value: type,
   }));
-};
-
-export const getInspectionResTypesOptions = (): TSelectValue[] => {
-  const mappedInspectionResTypes = _.map(INSP_RES_TYPES, (type) => ({
-    label: type,
-    value: type,
-  }));
-  return _.sortBy(mappedInspectionResTypes, (o) => o.value.toUpperCase());
-};
-
-export const getRouteTypesOptions = (): TSelectValue[] => {
-  const mappedRouteTypes = _.map(ROUTE_TYPES, (type) => ({
-    label: type,
-    value: type,
-  }));
-  return _.sortBy(mappedRouteTypes, (o) => o.value.toUpperCase());
 };
 
 export const createVariables = ({
@@ -1859,16 +1834,6 @@ export const getCurrentType = (
 
 export const isEditable = (recType: string = ""): boolean => {
   return _.get(FORM_FIELDS, [recType, "isActive"]);
-};
-
-export const getRecTypesOptions = (): TSelectValue[] => {
-  const result: TSelectValue[] = [];
-  _.forIn(FORM_FIELDS, function (value, key) {
-    if (value && value.isActive) {
-      result.push({ label: key, value: value.label });
-    }
-  });
-  return _.sortBy(result, (o) => o.value?.toUpperCase());
 };
 
 export const getFormattedTitle = (

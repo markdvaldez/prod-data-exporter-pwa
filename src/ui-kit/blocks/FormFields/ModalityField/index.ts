@@ -1,1 +1,0 @@
-export { ModalityField } from "./ModalityField";

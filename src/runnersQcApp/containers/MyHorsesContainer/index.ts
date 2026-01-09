@@ -1,1 +1,0 @@
-export { MyHorsesContainer } from './MyHorsesContainer';
