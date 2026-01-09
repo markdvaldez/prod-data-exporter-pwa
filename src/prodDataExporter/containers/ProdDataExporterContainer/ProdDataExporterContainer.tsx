@@ -10,7 +10,7 @@ export function ProdDataExporterContainer() {
 
   return (
     <div className="w-full min-h-screen overflow-y-auto pb-5 pr-5">
-      <div className="mx-auto flex w-full flex-col px-8 py-8 sm:px-6 lg:px-8 bg-cream border border-darkCream rounded-lg shadow-md">
+      <div className="mx-auto flex w-full min-h-full flex-col px-8 py-8 sm:px-6 lg:px-8 bg-cream border border-darkCream rounded-lg shadow-md">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold tracking-tight">
             Production Data Exporter
