@@ -3,6 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import ReplicateToS3SearchSection from "./ReplicateDataForm";
+import ProdDataImporterSection from "./ImportDataForm";
 
 export function ProdDataExporterContainer() {
   const router = useRouter();
@@ -27,6 +28,7 @@ export function ProdDataExporterContainer() {
             <div className="rounded-sm border border-gray-200 border-t-[8px] border-t-grass bg-white p-6 shadow-sm">
               <h2 className="text-xl font-semibold">Importa Data from S3 to DynamoDB</h2>
               <p className="text-sm">Load obfuscated data into QA or DEV environment</p>
+              <ProdDataImporterSection initialEnv="DEV" />
             </div>
           </div>
         </div>

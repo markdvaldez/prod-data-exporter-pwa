@@ -1,6 +1,3 @@
-// mockHorses.ts
-// Hard-coded sample data for local searching (no API needed)
-
 export type Horse = {
   hisaHorseId: string;
   name: string;

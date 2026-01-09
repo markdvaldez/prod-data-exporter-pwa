@@ -281,7 +281,7 @@ export default function ReplicateToS3SearchSection({
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search horse name or ID"
               className={cn(
-                "w-full rounded-[5px] bg-[#f9f9fa] border border-gray-200 px-4 py-4 pr-11 text-base text-gray-900",
+                "w-full rounded-[5px] bg-[#f9f9fa] border border-gray-200 px-4 py-3 pr-11 text-base text-gray-900",
                 "placeholder:text-gray-400",
                 "focus:outline-none focus:ring-2 focus:ring-blue-600"
               )}
@@ -310,7 +310,7 @@ export default function ReplicateToS3SearchSection({
             onClick={handleExportAndObfuscate}
             disabled={submitting || !query.trim()}
             className={cn(
-              "rounded-[5px] bg-blueLink px-5 py-4 text-base font-medium text-white",
+              "rounded-[5px] bg-blueLink px-5 py-3 text-base font-medium text-white",
               "hover:bg-blueLink focus:outline-none focus:ring-2 focus:ring-blue-600",
               (submitting || !query.trim()) && "cursor-not-allowed opacity-70"
             )}
@@ -348,7 +348,7 @@ export default function ReplicateToS3SearchSection({
                       className={cn(
                         "border-b border-blue-200 px-4 py-3",
                         "md:border-r md:last:border-r-0",
-                        idx >= rows.length - (rows.length % 3 || 3) && "border-b-0"
+                        idx >= rows.length - (rows.length % 2 || 2) && "border-b-0"
                       )}
                     >
                       <div className="text-sm">
@@ -362,7 +362,7 @@ export default function ReplicateToS3SearchSection({
                 </div>
               </div>
 
-              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-t-[1px] border-t-blue-200 bg-white px-4 py-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-t-[1px] border-t-blue-200 bg-white px-4 py-3">
                 <div className="text-sm text-gray-700">
                   Data saved to S3:{" "}
                   {data.s3Path ? (
